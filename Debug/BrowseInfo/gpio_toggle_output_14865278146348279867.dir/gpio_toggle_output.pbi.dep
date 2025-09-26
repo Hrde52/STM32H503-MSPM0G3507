@@ -1,0 +1,89 @@
+D:\000.ropente\040.RK3568\ti\gpio_my004\Debug\BrowseInfo\gpio_toggle_output_14865278146348279867.dir\gpio_toggle_output.pbi: \
+  D:\000.ropente\040.RK3568\ti\gpio_my004\gpio_toggle_output.c \
+  D:\000.ropente\040.RK3568\ti\gpio_my004\ti_msp_dl_config.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\msp.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\DeviceFamily.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\m0p\mspm0g350x.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdint.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\ycheck.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\yvals.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Defaults.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Config_Normal.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdbool.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\third_party\CMSIS\Core\Include\core_cm0plus.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\third_party\CMSIS\Core\Include\cmsis_version.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\third_party\CMSIS\Core\Include\cmsis_compiler.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\third_party\CMSIS\Core\Include\cmsis_iccarm.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\aarch32\iccarm_builtin.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\third_party\CMSIS\Core\Include\mpu_armv7.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_adc12.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_aes.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_comp.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_crc.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_dac12.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_dma.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_flashctl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_gpio.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_gptimer.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_i2c.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_iomux.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_mathacl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_mcan.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_oa.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_rtc.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_spi.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_trng.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_uart.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_vref.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_wuc.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\hw_wwdt.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\m0p\hw_debugss.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\driverlib.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_adc12.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_common.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_aes.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stddef.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\ysizet.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_aesadv.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_comp.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_crc.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_crcp.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_dac12.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_dma.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_flashctl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\m0p\dl_factoryregion.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\m0p\dl_core.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\m0p\dl_sysctl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_gpamp.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_gpio.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_i2c.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_iwdt.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_lfss.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_keystorectl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_lcd.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_mathacl.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_mcan.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_opa.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_rtc.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_rtc_common.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_rtc_a.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_scratchpad.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_spi.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_tamperio.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_timera.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_timer.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_timerg.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_trng.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_uart_extend.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_uart.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_uart_main.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_vref.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\dl_wwdt.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\m0p\dl_interrupt.h \
+  c:\ti\mspm0_sdk_2_00_01_00\source\ti\driverlib\m0p\dl_systick.h

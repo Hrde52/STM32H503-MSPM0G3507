@@ -1,0 +1,15 @@
+D:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\armproc.dll
+
+ D:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\armjlink.dll
+
+ E:\HTC\REPEATER\0925\Debug\Exe\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.out
+
+ --plugin=D:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\armLibSupportUniversal.dll
+
+ --device_macro=D:\Software\APP\Code\iar\ewarm-9.70.1\arm/config/debugger/TexasInstruments/MSPM0G1X0X_G3X0X.dmac
+
+ --device_macro=D:\Software\APP\Code\iar\ewarm-9.70.1\arm/config/debugger/TexasInstruments/MSPM0_Dssm.dmac
+
+ 
+
+

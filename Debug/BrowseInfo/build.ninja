@@ -1,0 +1,75 @@
+##IAR Ninja build file
+
+
+#Rules
+rule COMPDB_GEN
+  command = D$:\Software\APP\Code\iar\ewarm-9.70.1\common\bin\ClangdCompDbGenerator.exe $gencommand -f "$rspfile_name"
+  description = Building $out...
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+rule COMPDB_LINK
+  command = D$:\Software\APP\Code\iar\ewarm-9.70.1\common\bin\ClangdCompDbLinker.exe -f "$rspfile_name"
+  description = Building $out...
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+
+
+#Build steps
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\iar_16212457969649193182.dir\startup_mspm0g350x_iar.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\iar\startup_mspm0g350x_iar.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\iar_9900922914917184157.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\iar_16212457969649193182.dir\startup_mspm0g350x_iar.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\iar\startup_mspm0g350x_iar.c -work_dir E$:\HTC\REPEATER\0925\iar -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\iar_9900922914917184157.dir\startup_mspm0g350x_iar.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\iar_16212457969649193182.dir\startup_mspm0g350x_iar.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zcom485.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zcom485.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zcom485.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zcom485.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zcom485.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zcom485.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_process.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zscl1_process.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_process.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zscl1_process.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl1_process.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_process.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_variate.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zscl1_variate.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_variate.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zscl1_variate.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl1_variate.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_variate.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_process.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zscl2_process.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_process.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zscl2_process.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl2_process.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_process.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_variate.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zscl2_variate.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_variate.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zscl2_variate.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl2_variate.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_variate.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_delay_main.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zscl_delay_main.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_delay_main.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zscl_delay_main.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl_delay_main.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_delay_main.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_logic.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\zscl_logic.c -D __MSPM0G3507__ -o E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_logic.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\zscl_logic.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file E$:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl_logic.o
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_logic.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\BrowseInfo\ti_msp_dl_config.c.json : COMPDB_GEN 
+    flags = D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe E$:\HTC\REPEATER\0925\ti_msp_dl_config.c -D __MSPM0G3507__ -o "E$:\HTC\REPEATER\0925\Debug\Obj\SysConfig$ Generated$ Files_5435349133262493662.dir" --no_unroll --no_inline --no_tbaa --no_scheduling --debug --endian=little --cpu=Cortex-M0+ --debug --silent -e --aeabi --thumb --diag_suppress=Pa050 --fpu=None --dlib_config D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\inc\c\DLib_Config_Normal.h -I E$:\HTC\REPEATER\0925\ -I E$:\HTC\REPEATER\0925\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\0925\source\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\third_party\CMSIS\Core\Include\ -I E$:\HTC\REPEATER\ti\mspm0_sdk_2_01_00_03\source\ -Om --vla -e
+    gencommand = -output_file E$:\HTC\REPEATER\0925\Debug\BrowseInfo\ti_msp_dl_config.c.json -icc_path D$:\Software\APP\Code\iar\ewarm-9.70.1\arm\bin\iccarm.exe -source_file E$:\HTC\REPEATER\0925\ti_msp_dl_config.c -work_dir E$:\HTC\REPEATER\0925 -keyword_map_path D$:\Software\APP\Code\iar\ewarm-9.70.1\common\config\ClangdConfig.json -object_file "E$:\HTC\REPEATER\0925\Debug\Obj\SysConfig$ Generated$ Files_5435349133262493662.dir\ti_msp_dl_config.o"
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\BrowseInfo\ti_msp_dl_config.c.json.rsp
+
+build E$:\HTC\REPEATER\0925\Debug\compile_commands.json : COMPDB_LINK E$:\HTC\REPEATER\0925\Debug\BrowseInfo\iar_16212457969649193182.dir\startup_mspm0g350x_iar.c.json | E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zcom485.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_process.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_variate.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_process.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_variate.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_delay_main.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_logic.c.json $
+ E$:\HTC\REPEATER\0925\Debug\BrowseInfo\ti_msp_dl_config.c.json
+    flags = -o E$:\HTC\REPEATER\0925\Debug\compile_commands.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\iar_16212457969649193182.dir\startup_mspm0g350x_iar.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zcom485.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_process.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl1_variate.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_process.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl2_variate.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_delay_main.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\zscl_logic.c.json E$:\HTC\REPEATER\0925\Debug\BrowseInfo\ti_msp_dl_config.c.json
+    rspfile_name = E$:\HTC\REPEATER\0925\Debug\compile_commands.json.rsp
+

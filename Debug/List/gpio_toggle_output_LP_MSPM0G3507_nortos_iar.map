@@ -1,0 +1,660 @@
+###############################################################################
+#
+# IAR ELF Linker V9.70.1.475/W64 for ARM                  26/Sep/2025  13:48:22
+# Copyright 2007-2025 IAR Systems AB.
+#
+#    Output file  =
+#        E:\HTC\REPEATER\0925\Debug\Exe\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.out
+#    Map file     =
+#        E:\HTC\REPEATER\0925\Debug\List\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.map
+#    Command line =
+#        -f
+#        E:\HTC\REPEATER\0925\Debug\Exe\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.out.rsp
+#        (E:\HTC\REPEATER\0925\Debug\Obj\iar_9900922914917184157.dir\startup_mspm0g350x_iar.o
+#        "E:\HTC\REPEATER\0925\Debug\Obj\SysConfig Generated
+#        Files_5435349133262493662.dir\ti_msp_dl_config.o"
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zcom485.o
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl1_process.o
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl1_variate.o
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl2_process.o
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl2_variate.o
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl_delay_main.o
+#        E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir\zscl_logic.o
+#        --no_out_extension -o
+#        E:\HTC\REPEATER\0925\Debug\Exe\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.out
+#        --map
+#        E:\HTC\REPEATER\0925\Debug\List\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.map
+#        --config
+#        D:\Software\APP\Code\iar\ewarm-9.70.1\arm/config/linker/TexasInstruments/mspm0g3507.icf
+#        --semihosting
+#        E:\HTC\REPEATER\0925\source\ti\driverlib\lib\iar\m0p\mspm0g1x0x_g3x0x\driverlib.a
+#        --entry __iar_program_start --vfe --text_out locale --cpu=Cortex-M0+
+#        --fpu=None) --diagnostics_format=sarif_stdout --dependencies=n
+#        E:\HTC\REPEATER\0925\Debug\Exe\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.out.iar_deps
+#        --dynamic_output
+#        E:\HTC\REPEATER\0925\Debug\Exe\gpio_toggle_output_LP_MSPM0G3507_nortos_iar.out.iar_dynout
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__CPP_Runtime   = 1
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, there are calls to deallocation functions in the
+application, and the application appears to be primarily
+optimized for speed.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x0 {  ro section .intvec };
+"P1":  place in [from 0x0 to 0x1'ffff] {  ro };
+define block CSTACK with size = 1K, alignment = 8 { };
+define block PROC_STACK with size = 0, alignment = 8 { };
+define block HEAP with size = 2K, alignment = 8 { };
+"P2":  place in [from 0x2020'0000 to 0x2020'7fff] {
+           rw,  block CSTACK,  block PROC_STACK,  block HEAP };
+initialize by copy {  rw };
+
+No sections matched the following patterns:
+
+  section .BCRConfig  in "P3"
+  section .BSLConfig  in "P4"
+
+
+  Section            Kind         Address  Alignment    Size  Object
+  -------            ----         -------  ---------    ----  ------
+"A0":                                                   0xc0
+  .intvec            const            0x0          4    0xc0  startup_mspm0g350x_iar.o [3]
+                                   - 0xc0               0xc0
+
+"P1":                                                 0x3564
+  .text              ro code         0xc0          4   0xa7c  zcom485.o [2]
+  .text              ro code        0xb3c          4    0xf8  rand.o [4]
+  .text              ro code        0xc34          2    0xe0  I32DivModFast.o [6]
+  .text              ro code        0xd14          4   0x4d0  zscl_logic.o [2]
+  .text              ro code       0x11e4          4   0xa6c  zscl_delay_main.o [2]
+  .text              ro code       0x1c50          4     0x2  IntDivZer.o [6]
+  .text              ro code       0x1c52          2     0x2  startup_mspm0g350x_iar.o [3]
+  .text              ro code       0x1c54          4   0x97e  dl_mcan.o [5]
+  .text              ro code       0x25d4          4    0x34  ABImemcpy_fast.o [6]
+  .text              ro code       0x2608          4    0x60  ti_msp_dl_config.o [1]
+  .text              ro code       0x2668          2     0x2  zscl1_process.o [2]
+  .text              ro code       0x266c          4    0xd4  ti_msp_dl_config.o [1]
+  .text              ro code       0x2740          4   0x1ac  ti_msp_dl_config.o [1]
+  .text              ro code       0x28ec          4    0x38  ti_msp_dl_config.o [1]
+  .text              ro code       0x2924          4    0x54  ti_msp_dl_config.o [1]
+  .text              ro code       0x2978          4    0x54  ti_msp_dl_config.o [1]
+  .text              ro code       0x29cc          4    0x30  ti_msp_dl_config.o [1]
+  .text              ro code       0x29fc          4    0x30  ti_msp_dl_config.o [1]
+  .text              ro code       0x2a2c          4    0x30  ti_msp_dl_config.o [1]
+  .text              ro code       0x2a5c          4    0x54  ti_msp_dl_config.o [1]
+  .text              ro code       0x2ab0          4    0x54  ti_msp_dl_config.o [1]
+  .text              ro code       0x2b04          4    0x54  ti_msp_dl_config.o [1]
+  .text              ro code       0x2b58          2    0x10  ti_msp_dl_config.o [1]
+  .text              ro code       0x2b68          4    0x28  ti_msp_dl_config.o [1]
+  .text              ro code       0x2b90          4    0xbc  ti_msp_dl_config.o [1]
+  .text              ro code       0x2c4c          4   0x278  ti_msp_dl_config.o [1]
+  .text              ro code       0x2ec4          4     0xa  dl_common.o [5]
+  .text              ro code       0x2ed0          4    0xfc  dl_sysctl_mspm0g1x0x_g3x0x.o [5]
+  .text              ro code       0x2fcc          4   0x230  dl_timer.o [5]
+  .text              ro code       0x31fc          4    0x60  dl_uart.o [5]
+  .text              ro code       0x325c          4    0x18  ti_msp_dl_config.o [1]
+  .text              ro code       0x3274          4    0x18  ti_msp_dl_config.o [1]
+  .text              ro code       0x328c          4    0x18  ti_msp_dl_config.o [1]
+  .text              ro code       0x32a4          4    0x50  dl_dma.o [5]
+  .rodata            const         0x32f4          4    0xfc  ti_msp_dl_config.o [1]
+  .rodata            const         0x33f0          4    0x94  ti_msp_dl_config.o [1]
+  .rodata            const         0x3484          4    0x40  dl_mcan.o [5]
+  .text              ro code       0x34c4          2    0x3c  zero_init3.o [6]
+  .text              ro code       0x3500          2    0x30  copy_init3.o [6]
+  .rodata            const         0x3530          4    0x28  ti_msp_dl_config.o [1]
+  .text              ro code       0x3558          4    0x28  data_init.o [6]
+  .text              ro code       0x3580          4    0x22  cmain.o [6]
+  .text              ro code       0x35a2          2     0x4  low_level_init.o [4]
+  .text              ro code       0x35a6          2     0x8  exit.o [4]
+  .text              ro code       0x35b0          4     0x4  cexit.o [6]
+  .text              ro code       0x35b4          4     0xa  cexit_2.o [6]
+  .text              ro code       0x35c0          4    0x14  exit.o [7]
+  .iar.init_table    const         0x35d4          4    0x24  - Linker created -
+  .text              ro code       0x35f8          4    0x1c  cstartup_M.o [6]
+  .text              ro code       0x3614          2     0x8  startup_mspm0g350x_iar.o [3]
+  Initializer bytes  const         0x361c          4     0x8  <for P2-1>
+  .rodata            const         0x3624                0x0  zero_init3.o [6]
+  .rodata            const         0x3624                0x0  copy_init3.o [6]
+                                 - 0x3624             0x3564
+
+"P2", part 1 of 3:                                       0x8
+  P2-1                        0x2020'0000          4     0x8  <Init block>
+    .data            inited   0x2020'0000          4     0x8  rand.o [4]
+                            - 0x2020'0008                0x8
+
+"P2", part 2 of 3:                                     0x8bc
+  .bss               zero     0x2020'0008          4   0x330  ti_msp_dl_config.o [1]
+  .bss               zero     0x2020'0338          4    0xcc  zscl_delay_main.o [2]
+  .bss               zero     0x2020'0404          4    0x8c  zcom485.o [2]
+  .bss               zero     0x2020'0490          4    0x8c  zcom485.o [2]
+  .bss               zero     0x2020'051c          4    0x84  rand.o [4]
+  .bss               zero     0x2020'05a0          4    0x54  zcom485.o [2]
+  .bss               zero     0x2020'05f4          4    0x4c  zscl_logic.o [2]
+  .bss               zero     0x2020'0640          4    0x45  zscl_delay_main.o [2]
+  .bss               zero     0x2020'0685                0x2  zscl_logic.o [2]
+  .bss               zero     0x2020'0687                0x1  zscl_logic.o [2]
+  .bss               zero     0x2020'0688          4    0x45  zscl_delay_main.o [2]
+  .bss               zero     0x2020'06ce          2     0x2  zscl_delay_main.o [2]
+  .bss               zero     0x2020'06d0          4    0x44  zscl_delay_main.o [2]
+  .bss               zero     0x2020'0714          4    0x44  zscl_delay_main.o [2]
+  .bss               zero     0x2020'0758          4    0x44  zscl_delay_main.o [2]
+  .bss               zero     0x2020'079c          4    0x44  zscl_delay_main.o [2]
+  .bss               zero     0x2020'07e0          4    0x44  zscl_logic.o [2]
+  .bss               zero     0x2020'0824          4    0x28  zscl_logic.o [2]
+  .bss               zero     0x2020'084c          4    0x20  zscl_logic.o [2]
+  .bss               zero     0x2020'086c          4    0x1c  zcom485.o [2]
+  .bss               zero     0x2020'0888          4    0x18  zscl_delay_main.o [2]
+  .bss               zero     0x2020'08a0          4    0x14  zscl_logic.o [2]
+  .bss               zero     0x2020'08b4          4     0x4  zscl_logic.o [2]
+  .bss               zero     0x2020'08b8          4     0x4  zscl_logic.o [2]
+  .bss               zero     0x2020'08bc          2     0x2  zscl_logic.o [2]
+  .bss               zero     0x2020'08be                0x1  zscl_logic.o [2]
+  .bss               zero     0x2020'08bf                0x1  zscl_logic.o [2]
+  .bss               zero     0x2020'08c0                0x1  zscl_logic.o [2]
+  .bss               zero     0x2020'08c1                0x1  zscl_logic.o [2]
+  .bss               zero     0x2020'08c2                0x1  zscl_logic.o [2]
+                            - 0x2020'08c3              0x8bb
+
+"P2", part 3 of 3:                                     0x400
+  CSTACK                      0x2020'08c8          8   0x400  <Block>
+    CSTACK           uninit   0x2020'08c8              0x400  <Block tail>
+                            - 0x2020'0cc8              0x400
+
+Unused ranges:
+
+         From           To      Size
+         ----           --      ----
+       0x3624     0x1'ffff  0x1'c9dc
+  0x2020'08c4  0x2020'08c7       0x4
+  0x2020'0cc8  0x2020'7fff    0x7338
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x8bb:
+          0x2020'0008  0x8bb
+
+Copy (__iar_copy_init3)
+    1 source range, total size 0x8:
+               0x361c    0x8
+    1 destination range, total size 0x8:
+          0x2020'0000    0x8
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                        ro code  ro data  rw data
+    ------                        -------  -------  -------
+command line/config:
+    -------------------------------------------------------
+    Total:
+
+E:\HTC\REPEATER\0925\Debug\Obj\SysConfig Generated Files_5435349133262493662.dir: [1]
+    ti_msp_dl_config.o              2'304      440      816
+    -------------------------------------------------------
+    Total:                          2'304      440      816
+
+E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir: [2]
+    zcom485.o                       2'684               392
+    zscl1_process.o                     2
+    zscl_delay_main.o               2'668               640
+    zscl_logic.o                    1'232               254
+    -------------------------------------------------------
+    Total:                          6'586             1'286
+
+E:\HTC\REPEATER\0925\Debug\Obj\iar_9900922914917184157.dir: [3]
+    startup_mspm0g350x_iar.o           10      192
+    -------------------------------------------------------
+    Total:                             10      192
+
+dl6M_tln.a: [4]
+    exit.o                              8
+    low_level_init.o                    4
+    rand.o                            248        8      140
+    -------------------------------------------------------
+    Total:                            260        8      140
+
+driverlib.a: [5]
+    dl_common.o                        10
+    dl_dma.o                           80
+    dl_mcan.o                       2'430       64
+    dl_sysctl_mspm0g1x0x_g3x0x.o      252
+    dl_timer.o                        560
+    dl_uart.o                          96
+    -------------------------------------------------------
+    Total:                          3'428       64
+
+rt6M_tl.a: [6]
+    ABImemcpy_fast.o                   52
+    I32DivModFast.o                   224
+    IntDivZer.o                         2
+    cexit.o                             4
+    cexit_2.o                          10
+    cmain.o                            34
+    copy_init3.o                       48
+    cstartup_M.o                       28
+    data_init.o                        40
+    zero_init3.o                       60
+    -------------------------------------------------------
+    Total:                            502
+
+shb_l.a: [7]
+    exit.o                             20
+    -------------------------------------------------------
+    Total:                             20
+
+    Gaps                               10                 1
+    Linker created                              36    1'024
+-----------------------------------------------------------
+    Grand Total:                   13'120      740    3'267
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base        0x35d4          --   Gb  - Linker created -
+.iar.init_table$$Limit       0x35f8          --   Gb  - Linker created -
+?main                        0x3581         Code  Gb  cmain.o [6]
+ADC0_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+ADC1_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+AES_IRQHandler               0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+CANFD0_IRQHandler            0x13c7   0x34  Code  Gb  zscl_delay_main.o [2]
+CSTACK$$Base            0x2020'08c8          --   Gb  - Linker created -
+CSTACK$$Limit           0x2020'0cc8          --   Gb  - Linker created -
+Can_tx_boardtest        0x2020'08a0   0x14  Data  Gb  zscl_logic.o [2]
+Can_tx_master           0x2020'0600   0x14  Data  Gb  zscl_logic.o [2]
+Can_tx_object           0x2020'0628   0x14  Data  Gb  zscl_logic.o [2]
+Can_tx_slave            0x2020'0614   0x14  Data  Gb  zscl_logic.o [2]
+DAC0_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+DL_Common_delayCycles        0x2ec5    0xa  Code  Gb  dl_common.o [5]
+DL_Common_updateReg          0x2c91    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_DMA_enableChannel         0x1209   0x14  Code  Lc  zscl_delay_main.o [2]
+DL_DMA_initChannel           0x32a5   0x50  Code  Gb  dl_dma.o [5]
+DL_DMA_setDestAddr           0x1227    0xa  Code  Lc  zscl_delay_main.o [2]
+DL_DMA_setSrcAddr            0x121d    0xa  Code  Lc  zscl_delay_main.o [2]
+DL_DMA_setTransferSize       0x1231    0xa  Code  Lc  zscl_delay_main.o [2]
+DL_GPIO_clearPins            0x2d3f    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_clearPins            0x1241    0x8  Code  Lc  zscl_delay_main.o [2]
+DL_GPIO_enableOutput         0x2d47    0x6  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_enablePower          0x2ce7    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_initDigitalInput
+                             0x2d05    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_initDigitalOutput
+                             0x2cf9    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_initPeripheralAnalogFunction
+                             0x2d2d    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_initPeripheralInputFunction
+                             0x2d1f    0xe  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_initPeripheralOutputFunction
+                             0x2d11    0xe  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_readPins               0xc1    0xc  Code  Lc  zcom485.o [2]
+DL_GPIO_reset                0x2cf1    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_setPins              0x2d39    0x6  Code  Lc  ti_msp_dl_config.o [1]
+DL_GPIO_setPins              0x123b    0x6  Code  Lc  zscl_delay_main.o [2]
+DL_GPIO_togglePins           0x1249    0x6  Code  Lc  zscl_delay_main.o [2]
+DL_MCAN_TXBufAddReq          0x2285   0x2c  Code  Gb  dl_mcan.o [5]
+DL_MCAN_TXBufTransIntrEnable
+                             0x253d   0x26  Code  Gb  dl_mcan.o [5]
+DL_MCAN_clearInterruptStatus
+                             0x2d6b    0x6  Code  Lc  ti_msp_dl_config.o [1]
+DL_MCAN_clearIntrStatus
+                             0x24b3    0xa  Code  Gb  dl_mcan.o [5]
+DL_MCAN_enableInterrupt
+                             0x2d5f    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_MCAN_enableIntr           0x245d   0x16  Code  Gb  dl_mcan.o [5]
+DL_MCAN_enableIntrLine       0x2491   0x1c  Code  Gb  dl_mcan.o [5]
+DL_MCAN_enableModuleClock
+                             0x2d71    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_MCAN_enablePower          0x2d4d    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_MCAN_getIntrStatus        0x24ad    0x6  Code  Gb  dl_mcan.o [5]
+DL_MCAN_getOpMode            0x1c91    0xa  Code  Gb  dl_mcan.o [5]
+DL_MCAN_getPendingInterrupt
+                             0x124f    0x8  Code  Lc  zscl_delay_main.o [2]
+DL_MCAN_getRevisionId        0x258d   0x46  Code  Gb  dl_mcan.o [5]
+DL_MCAN_getRxFIFOStatus
+                             0x24bd   0x3c  Code  Gb  dl_mcan.o [5]
+DL_MCAN_init                 0x1c9b   0xf2  Code  Gb  dl_mcan.o [5]
+DL_MCAN_isMemInitDone        0x1c73    0xa  Code  Gb  dl_mcan.o [5]
+DL_MCAN_msgRAMConfig         0x1ec1  0x232  Code  Gb  dl_mcan.o [5]
+DL_MCAN_readMsgRam           0x22d1  0x154  Code  Gb  dl_mcan.o [5]
+DL_MCAN_reset                0x2d57    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_MCAN_selectIntrLine       0x2475   0x16  Code  Gb  dl_mcan.o [5]
+DL_MCAN_setBitTime           0x1da9   0xf0  Code  Gb  dl_mcan.o [5]
+DL_MCAN_setClockConfig       0x1c55   0x1e  Code  Gb  dl_mcan.o [5]
+DL_MCAN_setExtIDAndMask
+                             0x20f9   0x3a  Code  Gb  dl_mcan.o [5]
+DL_MCAN_setOpMode            0x1c7d   0x14  Code  Gb  dl_mcan.o [5]
+DL_MCAN_writeMsgRam          0x215d  0x120  Code  Gb  dl_mcan.o [5]
+DL_MCAN_writeRxFIFOAck       0x24f9   0x44  Code  Gb  dl_mcan.o [5]
+DL_SYSCTL_configSYSPLL       0x2ed1   0xb6  Code  Gb  dl_sysctl_mspm0g1x0x_g3x0x.o [5]
+DL_SYSCTL_disableHFXT        0x2ccb    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_SYSCTL_disableSYSPLL
+                             0x2cbf    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_SYSCTL_setBORThreshold
+                             0x2c9d    0x6  Code  Lc  ti_msp_dl_config.o [1]
+DL_SYSCTL_setFlashWaitState
+                             0x2cd7   0x10  Code  Lc  ti_msp_dl_config.o [1]
+DL_SYSCTL_setSYSOSCFreq
+                             0x2ca3    0xe  Code  Lc  ti_msp_dl_config.o [1]
+DL_SYSCTL_setULPCLKDivider
+                             0x2cb1    0xe  Code  Lc  ti_msp_dl_config.o [1]
+DL_SYSCTL_switchMCLKfromSYSOSCtoHSCLK
+                             0x2f87   0x24  Code  Gb  dl_sysctl_mspm0g1x0x_g3x0x.o [5]
+DL_TimerA_initPWMMode        0x3169   0x80  Code  Gb  dl_timer.o [5]
+DL_Timer_enableClock         0x2d95    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_Timer_enableInterrupt
+                             0x2d9d    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_Timer_enablePower         0x2d7b    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_Timer_getPendingInterrupt
+                             0x126b    0xa  Code  Lc  zscl_delay_main.o [2]
+DL_Timer_initPWMMode         0x3055   0xb2  Code  Gb  dl_timer.o [5]
+DL_Timer_initTimerMode       0x2fe3   0x5c  Code  Gb  dl_timer.o [5]
+DL_Timer_reset               0x2d85    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_Timer_setCCPDirection
+                             0x2d8d    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_Timer_setCaptCompUpdateMethod
+                             0x3115   0x1a  Code  Gb  dl_timer.o [5]
+DL_Timer_setCaptureCompareOutCtl
+                             0x312f   0x14  Code  Gb  dl_timer.o [5]
+DL_Timer_setCaptureCompareValue
+                             0x3107    0xa  Code  Gb  dl_timer.o [5]
+DL_Timer_setClockConfig
+                             0x2fcd   0x16  Code  Gb  dl_timer.o [5]
+DL_Timer_setLoadValue        0x1257    0x6  Code  Lc  zscl_delay_main.o [2]
+DL_Timer_startCounter        0x125d    0xe  Code  Lc  zscl_delay_main.o [2]
+DL_UART_enable               0x2dbb   0x10  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_enableDMATransmitEvent
+                             0x2e19    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_enableInterrupt
+                             0x2e0d    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_enableInterrupt
+                             0x1285    0xc  Code  Lc  zscl_delay_main.o [2]
+DL_UART_enablePower          0x2da9    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_getPendingInterrupt
+                             0x1291    0xa  Code  Lc  zscl_delay_main.o [2]
+DL_UART_init                 0x31fd   0x48  Code  Gb  dl_uart.o [5]
+DL_UART_receiveData          0x127d    0x8  Code  Lc  zscl_delay_main.o [2]
+DL_UART_reset                0x2db3    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_setBaudRateDivisor
+                             0x2ddd   0x30  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_setClockConfig       0x3245   0x10  Code  Gb  dl_uart.o [5]
+DL_UART_setOversampling
+                             0x2dcb   0x12  Code  Lc  ti_msp_dl_config.o [1]
+DL_UART_transmitData         0x1275    0x8  Code  Lc  zscl_delay_main.o [2]
+DL_WWDT_enablePower          0x2e43    0xa  Code  Lc  ti_msp_dl_config.o [1]
+DL_WWDT_initWatchdogMode
+                             0x2e23   0x20  Code  Lc  ti_msp_dl_config.o [1]
+DL_WWDT_reset                0x2e4d    0x8  Code  Lc  ti_msp_dl_config.o [1]
+DL_WWDT_restart              0x129b    0x8  Code  Lc  zscl_delay_main.o [2]
+DL_WWDT_setActiveWindow
+                             0x2e55    0xc  Code  Lc  ti_msp_dl_config.o [1]
+DMA_IRQHandler               0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+Default_Handler              0x1c53    0x2  Code  Lc  startup_mspm0g350x_iar.o [3]
+GROUP0_IRQHandler            0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+GROUP1_IRQHandler            0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+HardFault_Handler            0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+I2C0_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+I2C1_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+NMI_Handler                  0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+PendSV_Handler               0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+ProjNameBuf                   0x310    0x8  Data  Lc  zcom485.o [2]
+ProjNameBuf_B                 0x318    0x8  Data  Lc  zcom485.o [2]
+ROUT                         0x12a3   0x1a  Code  Gb  zscl_delay_main.o [2]
+RTC_IRQHandler               0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+Region$$Table$$Base          0x35d4          --   Gb  - Linker created -
+Region$$Table$$Limit         0x35f8          --   Gb  - Linker created -
+Reset_Handler                0x3615    0x8  Code  Wk  startup_mspm0g350x_iar.o [3]
+Rout_init                    0x12bd   0x42  Code  Gb  zscl_delay_main.o [2]
+SCL1_TXEN                    0x1589   0x42  Code  Gb  zscl_delay_main.o [2]
+SCL2_TXEN                    0x1b61   0x3a  Code  Gb  zscl_delay_main.o [2]
+SCL3_TXEN                    0x1bad   0x3a  Code  Gb  zscl_delay_main.o [2]
+SPI0_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+SPI1_IRQHandler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+SVC_Handler                  0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+SYSCFG_DL_DMA_SCL1_TX_init
+                             0x325d   0x18  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_DMA_SCL2_TX_init
+                             0x3275   0x18  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_DMA_SCL3_TX_init
+                             0x328d   0x18  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_DMA_init           0x2b59   0x10  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_GPIO_init          0x2741  0x1ac  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_MCAN0_init         0x2b91   0xbc  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_SYSCTL_init        0x28ed   0x38  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_WWDT0_init         0x2b69   0x28  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_ZCLK1_init         0x2925   0x54  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_ZCLK2_init         0x2979   0x54  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_ZSCL1_init         0x2a5d   0x54  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_ZSCL2_init         0x2ab1   0x54  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_ZSCL3_init         0x2b05   0x54  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_init               0x2609   0x60  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_initPower          0x266d   0xd4  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_scl1_com_idle_init
+                             0x29fd   0x30  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_scl1_time_init
+                             0x29cd   0x30  Code  Wk  ti_msp_dl_config.o [1]
+SYSCFG_DL_scl2_com_idle_init
+                             0x2a2d   0x30  Code  Wk  ti_msp_dl_config.o [1]
+Scl1_Data_Pack               0x2669    0x2  Code  Gb  zscl1_process.o [2]
+Scl1_Rx_Delay           0x2020'0888    0x1  Data  Gb  zscl_delay_main.o [2]
+Scl1_Tx_Done            0x2020'06ce    0x2  Data  Gb  zscl_delay_main.o [2]
+SysTick_Handler              0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+TIMA0_IRQHandler             0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+TIMA1_IRQHandler             0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+TIMG0_IRQHandler             0x1765   0x12  Code  Gb  zscl_delay_main.o [2]
+TIMG12_IRQHandler            0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+TIMG6_IRQHandler             0x18e9  0x25e  Code  Gb  zscl_delay_main.o [2]
+TIMG6_IRQHandler::time_out
+                        0x2020'0892    0x2  Data  Lc  zscl_delay_main.o [2]
+TIMG6_IRQHandler::time_out_100ms
+                        0x2020'0896    0x2  Data  Lc  zscl_delay_main.o [2]
+TIMG6_IRQHandler::time_out_1ms
+                        0x2020'0894    0x2  Data  Lc  zscl_delay_main.o [2]
+TIMG6_IRQHandler::time_out_1s
+                        0x2020'089a    0x2  Data  Lc  zscl_delay_main.o [2]
+TIMG6_IRQHandler::time_out_40ms
+                        0x2020'0898    0x2  Data  Lc  zscl_delay_main.o [2]
+TIMG7_IRQHandler             0x1b4d    0xa  Code  Gb  zscl_delay_main.o [2]
+TIMG8_IRQHandler             0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+UART0_IRQHandler             0x165d   0x7c  Code  Gb  zscl_delay_main.o [2]
+UART1_IRQHandler             0x15d1   0x7e  Code  Gb  zscl_delay_main.o [2]
+UART2_IRQHandler             0x1c53    0x2  Code  Wk  startup_mspm0g350x_iar.o [3]
+UART3_IRQHandler             0x16ed   0x6c  Code  Gb  zscl_delay_main.o [2]
+Version                 0x2020'0889    0x1  Data  Gb  zscl_delay_main.o [2]
+_Rand_idx               0x2020'059c    0x4  Data  Lc  rand.o [4]
+_Rand_rv                0x2020'051c   0x80  Data  Lc  rand.o [4]
+_Randinit               0x2020'0000    0x1  Data  Gb  rand.o [4]
+_Randseed               0x2020'0004    0x4  Data  Gb  rand.o [4]
+__NVIC_ClearPendingIRQ       0x11f7   0x12  Code  Lc  zscl_delay_main.o [2]
+__NVIC_EnableIRQ             0x11e5   0x12  Code  Lc  zscl_delay_main.o [2]
+__NVIC_SetPriority           0x2c4d   0x44  Code  Lc  ti_msp_dl_config.o [1]
+__aeabi_idiv                  0xc61         Code  Gb  I32DivModFast.o [6]
+__aeabi_idiv0                0x1c51         Code  Gb  IntDivZer.o [6]
+__aeabi_idivmod               0xc61         Code  Gb  I32DivModFast.o [6]
+__aeabi_uidiv                 0xc67         Code  Gb  I32DivModFast.o [6]
+__aeabi_uidivmod              0xc67         Code  Gb  I32DivModFast.o [6]
+__cmain                      0x3581         Code  Gb  cmain.o [6]
+__exit                       0x35c1   0x14  Code  Gb  exit.o [7]
+__iar_copy_init3             0x3501   0x30  Code  Gb  copy_init3.o [6]
+__iar_data_init3             0x3559   0x28  Code  Gb  data_init.o [6]
+__iar_fast_memcpy4           0x25d5         Code  Gb  ABImemcpy_fast.o [6]
+__iar_fast_memcpy8           0x25d5         Code  Gb  ABImemcpy_fast.o [6]
+__iar_program_start          0x35f9         Code  Gb  cstartup_M.o [6]
+__iar_zero_init3             0x34c5   0x3c  Code  Gb  zero_init3.o [6]
+__low_level_init             0x35a3    0x4  Code  Gb  low_level_init.o [4]
+__vector_table                  0x0   0xc0  Data  Gb  startup_mspm0g350x_iar.o [3]
+_call_main                   0x358d         Code  Gb  cmain.o [6]
+_exit                        0x35b1         Code  Gb  cexit.o [6]
+_exit_2                      0x35b5         Code  Gb  cexit_2.o [6]
+blink_cnt_485B          0x2020'08c2    0x1  Data  Gb  zscl_logic.o [2]
+blink_cnt_can           0x2020'083c    0x1  Data  Gb  zscl_logic.o [2]
+blink_cnt_scl           0x2020'05f6    0x1  Data  Gb  zscl_logic.o [2]
+blink_mode              0x2020'05f5    0x1  Data  Gb  zscl_logic.o [2]
+board_IX5               0x2020'08b4    0x4  Data  Gb  zscl_logic.o [2]
+board_IX6               0x2020'08b8    0x4  Data  Gb  zscl_logic.o [2]
+board_err               0x2020'087c    0x2  Data  Gb  zcom485.o [2]
+board_test                    0x645  0x4b6  Code  Gb  zcom485.o [2]
+boardtest_loop_process        0x59d   0x8e  Code  Gb  zcom485.o [2]
+cal_sum_value                  0xf1   0x24  Code  Gb  zcom485.o [2]
+cal_xor_value                  0xcd   0x24  Code  Gb  zcom485.o [2]
+can_cnt_rx              0x2020'0848    0x4  Data  Gb  zscl_logic.o [2]
+can_cnt_tx              0x2020'063c    0x4  Data  Gb  zscl_logic.o [2]
+can_master_data         0x2020'082c    0x8  Data  Gb  zscl_logic.o [2]
+can_nodata_cnt          0x2020'08c1    0x1  Data  Gb  zscl_logic.o [2]
+can_process                   0xe67   0xfc  Code  Gb  zscl_logic.o [2]
+can_req_data            0x2020'0824    0x8  Data  Gb  zscl_logic.o [2]
+can_slave_data          0x2020'0834    0x8  Data  Gb  zscl_logic.o [2]
+can_txd_start                0x12ff   0x66  Code  Gb  zscl_delay_main.o [2]
+door_data               0x2020'05f4    0x1  Data  Gb  zscl_logic.o [2]
+door_length_sf          0x2020'05fa    0x2  Data  Gb  zscl_logic.o [2]
+exit                         0x35a7    0x8  Code  Gb  exit.o [4]
+gDMA_SCL1_TXConfig           0x3384   0x18  Data  Lc  ti_msp_dl_config.o [1]
+gDMA_SCL2_TXConfig           0x339c   0x18  Data  Lc  ti_msp_dl_config.o [1]
+gDMA_SCL3_TXConfig           0x33b4   0x18  Data  Lc  ti_msp_dl_config.o [1]
+gEchoData_rs485         0x2020'0684    0x1  Data  Gb  zscl_delay_main.o [2]
+gEchoData_rs485A        0x2020'06cc    0x1  Data  Gb  zscl_delay_main.o [2]
+gInterruptLine1Status   0x2020'089c    0x4  Data  Gb  zscl_delay_main.o [2]
+gMCAN0Backup            0x2020'0180   0x98  Data  Gb  ti_msp_dl_config.o [1]
+gMCAN0BitTimes               0x33d0   0x20  Data  Lc  ti_msp_dl_config.o [1]
+gMCAN0ClockConf              0x33cc    0x4  Data  Lc  ti_msp_dl_config.o [1]
+gMCAN0InitParams             0x33f0   0x34  Data  Lc  ti_msp_dl_config.o [1]
+gMCAN0MsgRAMConfigParams
+                             0x3424   0x60  Data  Lc  ti_msp_dl_config.o [1]
+gSYSPLLConfig                0x3530   0x28  Data  Lc  ti_msp_dl_config.o [1]
+gZCLK1Backup            0x2020'0008   0xbc  Data  Gb  ti_msp_dl_config.o [1]
+gZCLK1ClockConfig            0x32f4    0x4  Data  Lc  ti_msp_dl_config.o [1]
+gZCLK1Config                 0x32f8    0x8  Data  Lc  ti_msp_dl_config.o [1]
+gZCLK2Backup            0x2020'00c4   0xbc  Data  Gb  ti_msp_dl_config.o [1]
+gZCLK2ClockConfig            0x3300    0x4  Data  Lc  ti_msp_dl_config.o [1]
+gZCLK2Config                 0x3304    0x8  Data  Lc  ti_msp_dl_config.o [1]
+gZSCL1Backup            0x2020'0308   0x30  Data  Gb  ti_msp_dl_config.o [1]
+gZSCL1ClockConfig            0x3354    0x2  Data  Lc  ti_msp_dl_config.o [1]
+gZSCL1Config                 0x3358    0xc  Data  Lc  ti_msp_dl_config.o [1]
+gZSCL2ClockConfig            0x3364    0x2  Data  Lc  ti_msp_dl_config.o [1]
+gZSCL2Config                 0x3368    0xc  Data  Lc  ti_msp_dl_config.o [1]
+gZSCL3ClockConfig            0x3374    0x2  Data  Lc  ti_msp_dl_config.o [1]
+gZSCL3Config                 0x3378    0xc  Data  Lc  ti_msp_dl_config.o [1]
+g_can_datan_time        0x2020'0890    0x1  Data  Gb  zscl_delay_main.o [2]
+g_can_rx_flag           0x2020'088f    0x1  Data  Gb  zscl_delay_main.o [2]
+get_scla_tdata_can            0xd5b   0x80  Code  Gb  zscl_logic.o [2]
+gscl1_com_idleBackup    0x2020'0218   0x78  Data  Gb  ti_msp_dl_config.o [1]
+gscl1_com_idleClockConfig
+                             0x3324    0x4  Data  Lc  ti_msp_dl_config.o [1]
+gscl1_com_idleTimerConfig
+                             0x3328   0x14  Data  Lc  ti_msp_dl_config.o [1]
+gscl1_timeClockConfig        0x330c    0x4  Data  Lc  ti_msp_dl_config.o [1]
+gscl1_timeTimerConfig        0x3310   0x14  Data  Lc  ti_msp_dl_config.o [1]
+gscl2_com_idleBackup    0x2020'0290   0x78  Data  Gb  ti_msp_dl_config.o [1]
+gscl2_com_idleClockConfig
+                             0x333c    0x4  Data  Lc  ti_msp_dl_config.o [1]
+gscl2_com_idleTimerConfig
+                             0x3340   0x14  Data  Lc  ti_msp_dl_config.o [1]
+handle_com_data               0x4b9   0xdc  Code  Gb  zcom485.o [2]
+io4_read                0x2020'0884    0x4  Data  Gb  zcom485.o [2]
+io_in_bit               0x2020'086f    0x1  Data  Gb  zcom485.o [2]
+io_test_bit             0x2020'086e    0x1  Data  Gb  zcom485.o [2]
+m_bk                    0x2020'086c    0x2  Data  Gb  zcom485.o [2]
+m_id_code               0x2020'0874    0x8  Data  Gb  zcom485.o [2]
+m_p_msg                 0x2020'0404   0x8c  Data  Gb  zcom485.o [2]
+m_send_shake_hand_times
+                        0x2020'087e    0x2  Data  Gb  zcom485.o [2]
+m_send_times            0x2020'0880    0x2  Data  Gb  zcom485.o [2]
+m_test_state            0x2020'0871    0x1  Data  Gb  zcom485.o [2]
+main                         0x1431  0x152  Code  Gb  zscl_delay_main.o [2]
+mem_copy                      0xd15   0x14  Code  Gb  zscl_logic.o [2]
+mem_set                       0xd29   0x10  Code  Gb  zscl_logic.o [2]
+mtestmsg                0x2020'05a0   0x54  Data  Gb  zcom485.o [2]
+out_y0_cnt              0x2020'083d    0x1  Data  Gb  zscl_logic.o [2]
+pData                   0x2020'0490   0x8c  Data  Gb  zcom485.o [2]
+poweroff                0x2020'0685    0x1  Data  Gb  zscl_logic.o [2]
+poweroff_delaycnt       0x2020'08be    0x1  Data  Gb  zscl_logic.o [2]
+poweroff_done           0x2020'0686    0x1  Data  Gb  zscl_logic.o [2]
+poweroff_on_cnt         0x2020'08bf    0x1  Data  Gb  zscl_logic.o [2]
+poweroff_on_en          0x2020'08c0    0x1  Data  Gb  zscl_logic.o [2]
+poweroff_on_en_timer    0x2020'08bc    0x2  Data  Gb  zscl_logic.o [2]
+poweron                 0x2020'0687    0x1  Data  Gb  zscl_logic.o [2]
+processRxMsg                 0x1365   0x62  Code  Gb  zscl_delay_main.o [2]
+rand                          0xb3d   0xde  Code  Gb  rand.o [4]
+request_set_code              0x419   0x98  Code  Gb  zcom485.o [2]
+rs485_proc_entry             0x10a1  0x130  Code  Gb  zscl_logic.o [2]
+rxd_buff_scl            0x2020'084c   0x20  Data  Gb  zscl_logic.o [2]
+rxd_can_timeout         0x2020'0844    0x2  Data  Gb  zscl_logic.o [2]
+rxd_can_timeout_m       0x2020'083e    0x2  Data  Gb  zscl_logic.o [2]
+rxd_can_timeout_req     0x2020'0842    0x2  Data  Gb  zscl_logic.o [2]
+rxd_can_timeout_s       0x2020'0840    0x2  Data  Gb  zscl_logic.o [2]
+rxd_flag                0x2020'088a    0x1  Data  Gb  zscl_delay_main.o [2]
+rxd_flag_rs485A         0x2020'088c    0x1  Data  Gb  zscl_delay_main.o [2]
+rxd_flag_rs485B         0x2020'088d    0x1  Data  Gb  zscl_delay_main.o [2]
+rxd_scl_timeout         0x2020'05f8    0x2  Data  Gb  zscl_logic.o [2]
+rxd_uart0               0x2020'0338   0x44  Data  Gb  zscl_delay_main.o [2]
+rxd_uart0_tmp           0x2020'06d0   0x44  Data  Gb  zscl_delay_main.o [2]
+rxd_uart1               0x2020'037c   0x44  Data  Gb  zscl_delay_main.o [2]
+rxd_uart1_tmp           0x2020'0758   0x44  Data  Gb  zscl_delay_main.o [2]
+rxd_uart2               0x2020'03c0   0x44  Data  Gb  zscl_delay_main.o [2]
+rxd_uart2_tmp           0x2020'079c   0x44  Data  Gb  zscl_delay_main.o [2]
+send_heart_beat               0x1d7   0x8a  Code  Gb  zcom485.o [2]
+send_shake_hand               0x115   0xc2  Code  Gb  zcom485.o [2]
+send_test_end                 0x261   0xae  Code  Gb  zcom485.o [2]
+send_test_result              0x321   0xe6  Code  Gb  zcom485.o [2]
+time_100ms              0x2020'088e    0x1  Data  Gb  zscl_delay_main.o [2]
+time_out_can            0x2020'05fc    0x2  Data  Gb  zscl_logic.o [2]
+timeout_can                   0xddb   0x8c  Code  Gb  zscl_logic.o [2]
+txd_scla                0x2020'07e0   0x44  Data  Gb  zscl_logic.o [2]
+txd_uart0               0x2020'0714   0x44  Data  Gb  zscl_delay_main.o [2]
+txd_uart1               0x2020'0640   0x44  Data  Gb  zscl_delay_main.o [2]
+txd_uart2               0x2020'0688   0x44  Data  Gb  zscl_delay_main.o [2]
+uart0_receive                0x1795   0x50  Code  Gb  zscl_delay_main.o [2]
+uart_proc_entry               0xf63  0x130  Code  Gb  zscl_logic.o [2]
+uart_receive_rs485           0x17f9   0x74  Code  Gb  zscl_delay_main.o [2]
+uart_receive_rs485A          0x1879   0x42  Code  Gb  zscl_delay_main.o [2]
+uart_sending_flag       0x2020'088b    0x1  Data  Gb  zscl_delay_main.o [2]
+xor_check_sum                 0xd39   0x22  Code  Gb  zscl_logic.o [2]
+yo_err_bit              0x2020'0870    0x1  Data  Gb  zcom485.o [2]
+
+
+[1] = E:\HTC\REPEATER\0925\Debug\Obj\SysConfig Generated Files_5435349133262493662.dir
+[2] = E:\HTC\REPEATER\0925\Debug\Obj\gpio_toggle_output_14865278146348279867.dir
+[3] = E:\HTC\REPEATER\0925\Debug\Obj\iar_9900922914917184157.dir
+[4] = dl6M_tln.a
+[5] = driverlib.a
+[6] = rt6M_tl.a
+[7] = shb_l.a
+
+  13'120 bytes of readonly  code memory
+     740 bytes of readonly  data memory
+   3'267 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
