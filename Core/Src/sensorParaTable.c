@@ -2,7 +2,7 @@
 #include <string.h>
 #include "stmflash.h"
 
-#define PARA_TABLE_FLASH_SAVE_ADDR 0x08018000 /* 设置FLASH 保存地址 */
+#define PARA_TABLE_FLASH_SAVE_ADDR  0x0800E000 //0x08018000 /* 设置FLASH 保存地址 */
 
 uint32_t ParaTable_Default[FF_COUNT] =
 	{
@@ -44,8 +44,8 @@ uint32_t ParaTable_Default[FF_COUNT] =
 		2300, // nd06第13个像素
 		2300, // nd06第14个像素
 		2300, // nd06第15个像素
-		2300  // nd06第16个像素
-
+		2300,  // nd06第16个像素
+		0
 };
 
 FF_PARA_USE PARA_TABLE_USE;

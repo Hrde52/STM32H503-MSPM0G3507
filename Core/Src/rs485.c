@@ -190,7 +190,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 							rxIndexTooling = 0;
 							memset(rxDBuffTooling1, 0, sizeof(rxDBuffTooling1));
 							HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
-							HAL_Delay(100);
+							//HAL_Delay(100);
 							HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
 							return;
 					}
@@ -274,7 +274,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 							memset(rxDBuffTooling2, 0, sizeof(rxDBuffTooling2));
 
 							HAL_GPIO_WritePin(RS485_GHP_EN_GPIO_Port, RS485_GHP_EN_Pin, GPIO_PIN_RESET);
-							HAL_Delay(100);
+							//HAL_Delay(100);
 							HAL_UART_Receive_IT(&huart2, &rxDBuffTooling2[rxIndexTooling2], 1);
 							return;
 					}
@@ -540,11 +540,12 @@ void Process485Tooling(uint8_t *data)
     {
 			return;
     }
+		
 		if(gotToolingHandshake == 0)
 		{
 			gotToolingHandshake = 1;
-			rxIndexTooling = 0;
-			HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
+//			rxIndexTooling = 0;
+//			HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
 			return;
 		}
     
@@ -563,7 +564,7 @@ void Process485Tooling(uint8_t *data)
 		
 		HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_SET);
 		HAL_UART_Transmit(&huart1, resultUp, 20, 100);
-
+		HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
     return;
 }
 
@@ -577,14 +578,6 @@ void ProcessGHPTooling(uint8_t *data)
     {
 			return;
     }
-		
-		if(gotToolingHandshake == 0)
-		{
-			gotToolingHandshake = 1;
-			rxIndexTooling2 = 0;
-			HAL_UART_Receive_IT(&huart2, &rxDBuffTooling2[rxIndexTooling2], 1);
-			return;
-		}
 		
 		if(getIN_IO == 0 )
 		{
@@ -629,13 +622,13 @@ void ProcessGHPTooling(uint8_t *data)
         isToolingTest = 0;
         HAL_GPIO_WritePin(TOF_LED_GPIO_Port, TOF_LED_Pin, GPIO_PIN_SET);
         
-				if(PARA_TABLE_USE.data.programVerison == 0x0102)
-					PARA_TABLE_USE.data.programVerison = 0x0101;
-				else
-					PARA_TABLE_USE.data.programVerison = 0x0100;
+				if(PARA_TABLE_USE.data.passToolingStatus == 0x0)
+					PARA_TABLE_USE.data.passToolingStatus = 0x01;
+				else if(PARA_TABLE_USE.data.passToolingStatus == 0x01)
+					PARA_TABLE_USE.data.passToolingStatus = 0x02;
 				
         paraTable_Write();
-        HAL_NVIC_SystemReset();
+        //HAL_NVIC_SystemReset();
     }
 		
     return;

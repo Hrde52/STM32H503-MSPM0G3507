@@ -3,7 +3,7 @@
 
 #include "main.h"
 
-#define FF_COUNT 35
+#define FF_COUNT 36  //35
 
 typedef union {
     struct
@@ -30,6 +30,7 @@ typedef union {
         uint32_t cargoLift_nd06MaxChkDistance;          // 0.18 4000
         uint32_t cargoLift_nd06MinChkDistance;          // 0.19 300
         uint32_t cargoLift_nd06StudyPixelDistance[16];
+				uint32_t passToolingStatus;
     } data;
     uint32_t DATE[FF_COUNT];
 } FF_PARA_USE;

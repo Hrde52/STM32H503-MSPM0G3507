@@ -196,7 +196,7 @@ uint8_t testND06()
 void testIO()
 {
 	
-	HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
 	
 	return;
 }

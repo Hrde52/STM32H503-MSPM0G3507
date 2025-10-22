@@ -120,21 +120,21 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
 	
-//	paraTable_Reset();
-//	paraTable_Init();
+	//paraTable_Reset();
+	paraTable_Init();
 	
 	//MX_IWDG_Init();
 
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-    HAL_UART_DeInit(&huart3); //
-    MX_GPIO_DTS6012_Init();
-    HAL_GPIO_WritePin(DTS6012_EN_GPIO_Port, DTS6012_EN_Pin, 0); //
-    HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, 0);       //
-    HAL_Delay(500);
-    HAL_GPIO_WritePin(DTS6012_EN_GPIO_Port, DTS6012_EN_Pin, 1); //
-    HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, 1);
-    HAL_Delay(500);
+	HAL_UART_DeInit(&huart3); //
+	MX_GPIO_DTS6012_Init();
+	HAL_GPIO_WritePin(DTS6012_EN_GPIO_Port, DTS6012_EN_Pin, 0); //
+	HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, 0);       //
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(DTS6012_EN_GPIO_Port, DTS6012_EN_Pin, 1); //
+	HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, 1);
+	HAL_Delay(500);
 
 			//HAL_IWDG_Refresh(&hiwdg); 
 		
@@ -167,17 +167,17 @@ int main(void)
 		{
        TIME_1S_FLAG = 0;
 			//HAL_IWDG_Refresh(&hiwdg);
-			if (waitToolingTimes <= 3) 
+			if (waitToolingTimes <= 10) 
 			{
 				waitToolingTimes++;
 			}
-			if(waitToolingTimes == 4 && gotToolingHandshake == 0)
+			if(waitToolingTimes == 11 && gotToolingHandshake == 0)
 			{
 				isToolingTest = 0;
 			}		
     }
 		
-		if ((isToolingTest == 1) && (waitToolingTimes <= 3))
+		if ((isToolingTest == 1) && (waitToolingTimes <= 30))
     {
         ToolingTest();
     }
@@ -255,7 +255,7 @@ void ToolingTest()
 {
 		//HAL_IWDG_Refresh(&hiwdg);
     LEDON;
-    //isToolingTest = 1;
+    testIO();
     initTooling();
     HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
     // HAL_Delay(100);
@@ -264,6 +264,7 @@ void ToolingTest()
     HAL_GPIO_WritePin(RS485_GHP_EN_GPIO_Port, RS485_GHP_EN_Pin, GPIO_PIN_RESET);
     //		HAL_Delay(100);
     HAL_UART_Receive_IT(&huart2, &rxDBuffTooling2[rxIndexTooling2], 1);
+	
     while (1)
     {
 			
@@ -286,11 +287,11 @@ void ToolingTest()
 					dts6012_start();
 					//HAL_IWDG_Refresh(&hiwdg); 
 				
-					if (waitToolingTimes <= 3) 
+					if (waitToolingTimes <= 10) 
 					{
 						waitToolingTimes++;
 					}
-					if(waitToolingTimes == 4 && gotToolingHandshake == 0)
+					if(waitToolingTimes == 11 && gotToolingHandshake == 0)
 					{
 						isToolingTest = 0;
 					}	
@@ -301,6 +302,10 @@ void ToolingTest()
 
 void normalWork()
 {
+	  MX_USART1_UART_Init();
+		MX_USART2_UART_Init();
+		HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
+		LEDOFF;
 		//HAL_IWDG_Refresh(&hiwdg);
 	
 	  RS485_PDA_RX_ENABLE();
