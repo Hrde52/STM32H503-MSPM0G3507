@@ -112,12 +112,14 @@ txd_uart_TypeDef txd_uart2;
 uint8_t rxd_flag;
 uint8_t uart_sending_flag;
 
-
+uint8_t rxd_TFD_flag;
 
 uint8_t rxd_flag_rs485A;
 uint8_t rxd_flag_rs485B;
 uint8_t time_100ms = 0;
 
+uint8_t rxd_flag_ND1;
+uint8_t rxd_flag_ND2;
 
 volatile uint32_t gInterruptLine1Status;
 unsigned char gServiceInt;
@@ -404,9 +406,49 @@ static void rs485B_txd_start(unsigned char tx[],unsigned char len)
 	DL_UART_Main_transmitData(ZSCL2_INST, txd_uart1.txd_uart_data[0]);
 }
 
+// 整合TFD板卡错误状态
+void integrate_tfd_error(const TFD_BOARD_DATA* tfd_data) {
+    if (tfd_data->board_id == 1) {
+        // TFD-1: 占用位0-5
+        board4_err.bit.TFD1_485_1 = tfd_data->status[0];
+        board4_err.bit.TFD1_485_2 = tfd_data->status[1];
+        board4_err.bit.TFD1_DTS6012 = tfd_data->status[2];
+        board4_err.bit.TFD1_ND06 = tfd_data->status[3];
+        board4_err.bit.TFD1_IO = tfd_data->status[4];
+        board4_err.bit.TFD1_X = tfd_data->status[5];
+    } else if (tfd_data->board_id == 2) {
+        // TFD-2: 占用位6-11
+        board4_err.bit.TFD2_485_1 = tfd_data->status[0];
+        board4_err.bit.TFD2_485_2 = tfd_data->status[1];
+        board4_err.bit.TFD2_DTS6012 = tfd_data->status[2];
+        board4_err.bit.TFD2_ND06 = tfd_data->status[3];
+        board4_err.bit.TFD2_IO = tfd_data->status[4];
+        board4_err.bit.TFD2_X = tfd_data->status[5];
+    }
+}
+
+// 整合ND06板卡错误状态
+void integrate_nd06_error(const ND06_BOARD_DATA* nd06_data) {
+    if (nd06_data->board_id == 1) {
+        // ND06-1: 占用位12-13
+        board4_err.bit.ND06_1 = nd06_data->status[0];
+        //board4_err.bit.ND06LED_1 = nd06_data->status[1];
+    } else if (nd06_data->board_id == 2) {
+        // ND06-2: 占用位14-15
+        board4_err.bit.ND06_2 = nd06_data->status[0];
+        //board4_err.bit.ND06LED_2 = nd06_data->status[1];
+    }
+}
 
 
 uint8_t test_start = 0;
+uint8_t rxND06[2];
+uint8_t rxTFD[6];
+TFD_BOARD_DATA tfd1_data = {1, {0, 0, 0, 0, 0, 0}};  // TFD-1: 通道2,5异常
+TFD_BOARD_DATA tfd2_data = {2, {0, 0, 0, 0, 0, 0}};  // TFD-2: 通道1,4异常
+ND06_BOARD_DATA nd061_data = {1, {0, 0}};            // ND06-1: 通道1异常
+ND06_BOARD_DATA nd062_data = {2, {0, 0}};            // ND06-2: 通道2异常
+
 int main(void)
 {
 	uint8_t tx[3];
@@ -416,7 +458,7 @@ int main(void)
 	uint8_t i;
 	
 	__disable_irq();
-    SYSCFG_DL_init();
+        SYSCFG_DL_init();
 
 	SCL1_RX;
 	// scl_setDirection(DL_UART_MAIN_DIRECTION_RX);
@@ -461,7 +503,7 @@ int main(void)
 
 	rxd_uart1.rxd_uart_cnt = 0;
 	rxd_flag_rs485B = 0;
-rxd_flag_rs485A = 0;
+        rxd_flag_rs485A = 0;
 	RS485B_RX;
 	RS485A_RX;
 
@@ -486,7 +528,12 @@ rxd_flag_rs485A = 0;
 
 	can_cnt_rx = 0;
 	can_cnt_tx = 0;
-	
+        
+	// 清除所有错误状态
+        board4_err.all = 0x0000;
+//       模拟接收到的板卡数据（实际中从通信接口获取）
+
+                        
     while (1)
 	{
 		__WFI();
@@ -494,6 +541,11 @@ rxd_flag_rs485A = 0;
                 if(time_100ms==1)
                 {
                   time_100ms = 0;
+//                  DL_GPIO_clearPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的4
+//                  DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的4
+//                  homework_switch1 = DL_GPIO_readPins(IX7_PORT,IX7_PIN_16_PIN)>0? 1:0;
+//                  homework_switch2 = DL_GPIO_readPins(IX6_PORT,IX6_PIN_15_PIN)>0? 1:0;
+//                  homework_switch3 = DL_GPIO_readPins(IX5_PORT,IX5_PIN_14_PIN)>0? 1:0;
                   boardtest_loop_process();
                 }
 		// ----------------------------rs485B--------------------------------------------
@@ -502,6 +554,14 @@ rxd_flag_rs485A = 0;
 			rxd_flag_rs485B = 0;
 
 			blink_cnt_485B = 3;
+       
+                        
+                        // 驱动继电器2 进行 485连接的切换
+                        //ROUT(ROUT_Y6_PIN_7_PIN, 0);
+                        
+                         send_test_result(1);
+                         send_test_end();
+                        
 			// rs485B_txd_start(rxd_uart1_tmp.rxd_uart_data,rxd_uart1_tmp.rxd_uart_length);
 			//rxd_uart1_tmp.rxd_uart_length = 0;
 
@@ -525,8 +585,9 @@ rxd_flag_rs485A = 0;
 			txd_uart1.txd_uart_data[15] = 0x86;
 			SCL2_TXEN(16,txd_uart1.txd_uart_data);
 			*/
-
-			rs485_proc_entry(&rxd_uart1_tmp);
+                    
+			// rs485_proc_entry(&rxd_uart1_tmp);   // 进入正常工作程序
+                        
 		}
 		// ----------------------------SCL--------------------------------------------
 		if( 1 == rxd_flag)
@@ -568,7 +629,9 @@ rxd_flag_rs485A = 0;
 			*/
 		}
 		// ---------------------------CAN---------------------------------------------		
-		if(g_can_rx_flag == 0x01)
+		
+                /*
+                if(g_can_rx_flag == 0x01)
 		{
 			g_can_rx_flag = 0;
 			
@@ -597,9 +660,10 @@ rxd_flag_rs485A = 0;
 			// --------------------------
 			gInterruptLine1Status = 0;	
 		   }
+                */
                 
 
-	}
+	}   // END OF WHILE
 }
 
 //****************************************************************************************
@@ -826,6 +890,8 @@ void uart0_receive(void)
 		rxd_flag = 1;
 	}
         
+        
+        
 	if( (rxd_uart0_tmp.rxd_uart_length>=4) && 
 		(0xA9== rxd_uart0_tmp.rxd_uart_data[0]) &&
                   (0x13== rxd_uart0_tmp.rxd_uart_data[1]))
@@ -835,8 +901,13 @@ void uart0_receive(void)
 }
 
 
-
-
+uint8_t rxBuffT[20] = {0};
+//   0  1    2   3   4 5678   9 10 11 12 13 14
+//  485 4852 dts nd X  dts[4] nd [6]
+uint8_t rxTFD1[15] = {0};  
+uint8_t rxTFD2[15] = {0};
+uint8_t rxND1[6] = {0};
+uint8_t rxND2[6] = {0};
 void uart_receive_rs485(void)
 {
 	unsigned char i;
@@ -852,12 +923,139 @@ void uart_receive_rs485(void)
 	rxd_uart1_tmp.rxd_uart_length = rxd_uart1.rxd_uart_length;
 	//------------------------------------------------------------
 	//if(rxd_uart1_tmp.rxd_uart_length >= 17)
-        if(rxd_uart1_tmp.rxd_uart_length >= 10)
+        if(rxd_uart1_tmp.rxd_uart_length >= 20)  //10
 	{
-		rxd_flag_rs485B = 1;
+         
+                mem_copy(rxBuffT, rxd_uart1_tmp.rxd_uart_data, 20);
+                
+                switch(homework_switch1)
+                {
+                  //TFD
+                  case 0:
+                  {
+                    switch(selectTFD)
+                    {
+                      //TFD01
+                      case 0:
+                      {
+                        
+                        if(rxBuffT[1] == 0x1F)// 485
+                        {
+                          rxTFD1[0] =1;
+                          getRspTFD11 = 1;
+                        }
+                        
+                        else if(rxBuffT[1] == 0x2F)// 485 GHP
+                        {
+                           getRspTFD12 = 1;
+                           rxTFD1[1] = 1;
+                                
+                           if(rxBuffT[2] == 1)  // dts6012
+                           {
+                             rxTFD1[2] = 1;
+                             
+                           }
+                           mem_copy(&rxTFD1[5], &rxBuffT[8], 4);   // 6 7 8 9  
+                           
+                           if(rxBuffT[3] == 1)  // ND
+                           {
+                             rxTFD1[3] = 1;
+                             
+                           }
+                           mem_copy(&rxTFD1[9], &rxBuffT[12], 6);   // 10 11 12 13 14 15
+                           
+                           if(rxBuffT[4] == 1)  // dts6012
+                           {
+                             rxTFD1[4] = 1;               
+                           }
+                        }
+                        break;
+                      }
+                      
+                      //TFD02
+                      case 1:
+                      {
+                        if(rxBuffT[1] == 0x1F)// 485
+                        {
+                          rxTFD2[0] =1;
+                          getRspTFD21 = 1;
+                        }
+                        
+                        else if(rxBuffT[1] == 0x2F)// 485 GHP
+                        {
+                           getRspTFD22 = 1;
+                           rxTFD2[1] = 1;
+                           
+                           if(rxBuffT[2] == 1)  // dts6012
+                           {
+                             rxTFD2[2] = 1;
+                                
+                           }
+                           mem_copy(&rxTFD2[5], &rxBuffT[8], 4);   // 6 7 8 9    
+                           
+                           if(rxBuffT[3] == 1)  // ND
+                           {
+                             rxTFD2[3] = 1;
+                             
+                           }
+                           mem_copy(&rxTFD2[9], &rxBuffT[12], 6);   // 10 11 12 13 14 15
+                           
+                           if(rxBuffT[4] == 1)  // dts6012
+                           {
+                             rxTFD2[4] = 1;               
+                           }
+                        }
+                        break;
+                      }
+                      
+                    default:
+                      break;
+                    }
+                  
+                  }
+                  // ND06
+                  case 1:
+                  {
+                    // ND06-1
+                    if(rxBuffT[1] == 0x1F)
+                    {
+                      mem_copy(nd061_data.status, &rxBuffT[2], 2);           
+                      mem_copy(rxND1, &rxBuffT[12], 6);
+                      
+                      getRspNd061 = 1;
+                    }
+                    //ND06-2
+                    else if(rxBuffT[1] == 0x2F)
+                    {
+                      mem_copy(nd062_data.status, &rxBuffT[2], 2);          
+                      mem_copy(rxND2, &rxBuffT[12], 6);
+                      
+                      getRspNd062 = 1;
+                    }
+                    
+//                    if(rxd_flag_ND1 == 1 && rxd_flag_ND2 == 1)
+//                    {
+//                      rxd_flag_rs485B = 1;
+//                    }
+                    
+                    break;
+                  }
+                  default:
+                    break;
+                }
+                
+                
+                
 	}
 	//------------------------------------------------------------
-	
+//	if( (rxd_uart1_tmp.rxd_uart_length>=10) && 
+//		(0xCC== rxd_uart1_tmp.rxd_uart_data[0]) 
+//           )
+//        {
+//          mtestmsg.rs485a_flag = 1;
+//          
+//        }
+        /*
 	if( (rxd_uart1_tmp.rxd_uart_length>=4) && 
 		(0xA9== rxd_uart1_tmp.rxd_uart_data[0]) 
                   &&(0x16== rxd_uart1_tmp.rxd_uart_data[1]))
@@ -872,7 +1070,7 @@ void uart_receive_rs485(void)
           mtestmsg.rs485b_flag = 1;
            mtestmsg.io_value = rxd_uart1_tmp.rxd_uart_data[2];
         }       
-	
+	*/
 
 	/*
 	p_xor = xor_check_sum(0,15,rxd_uart1.rxd_uart_data);
@@ -1262,6 +1460,9 @@ void SCL2_TXEN(uint8_t TxLength,uint8_t * src)
 	// SCL2_TX;
 
 	RS485B_TX;
+        
+        delay_cycles(50);
+        
 	DL_DMA_setSrcAddr(DMA, DMA_SCL2_TX_CHAN_ID, (uint32_t) &src[0]);
 	DL_DMA_setDestAddr(DMA, DMA_SCL2_TX_CHAN_ID, (uint32_t)(&ZSCL2_INST->TXDATA));
 	DL_DMA_setTransferSize(DMA, DMA_SCL2_TX_CHAN_ID, TxLength);
@@ -1279,6 +1480,9 @@ void SCL3_TXEN(uint8_t TxLength,uint8_t * src)
 	// SCL2_TX;
 
 	RS485A_TX;
+        
+        delay_cycles(50);
+        
 	DL_DMA_setSrcAddr(DMA, DMA_SCL3_TX_CHAN_ID, (uint32_t) &src[0]);
 	DL_DMA_setDestAddr(DMA, DMA_SCL3_TX_CHAN_ID, (uint32_t)(&ZSCL3_INST->TXDATA));
 	DL_DMA_setTransferSize(DMA, DMA_SCL3_TX_CHAN_ID, TxLength);

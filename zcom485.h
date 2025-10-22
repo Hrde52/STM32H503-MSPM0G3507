@@ -3,8 +3,12 @@
 
 #include "typdef.h"
 #include "define.h"
+#include "stdlib.h"
+#include "zscl_logic.h"
+#include "string.h"
+#include <stdio.h>
 
-#define VERSION      "V1.0.0.1"
+#define VERSION      "V1.0.0" //"V1.0.0.1"
 
 #define COMM_VERSION    1
 #define ENCRY_VERSION   2
@@ -55,7 +59,8 @@ static const unsigned char RxLicRand[16] =
 };
 static const uint8_t ProjNameBuf[8] = 
 {
-    0x02, 0x02, 0x00,  0x03, 0x00, 0x00, 0x00, 0x02
+  0x02, 0x04, 0x02,  0x02, 0x00, 0x01, 0x00, 0x00
+    //0x02, 0x02, 0x00,  0x03, 0x00, 0x00, 0x00, 0x02
 };
 
 static const uint8_t ProjNameBuf_B[8] = 
@@ -70,7 +75,7 @@ typedef struct
 {
     uint8_t mFrHead;
     uint8_t mLenh;     /*from ver*/
-    uint8_t mLenl;
+    uint8_t mLenl;     
     uint8_t mVer;
     uint8_t mBk[2];
     uint8_t mCmd;
@@ -148,6 +153,50 @@ typedef union
   uint16_t all;
 }SIG_ERR_BITS;
 
+// TFD板卡数据结构（6个检测点）
+typedef struct {
+    uint8_t board_id;    // 板卡ID: 1或2
+    uint8_t status[6];   // 6个检测点状态，0=正常，1=异常
+} TFD_BOARD_DATA;
+
+// ND06板卡数据结构（2个检测点）  
+typedef struct {
+    uint8_t board_id;    // 板卡ID: 1或2
+    uint8_t status[2];   // 2个检测点状态，0=正常，1=异常
+} ND06_BOARD_DATA;
+
+
+typedef union 
+{
+  struct
+  {    
+    uint16_t TFD1_485_1:1;  
+    uint16_t TFD1_485_2:1;  
+    uint16_t TFD1_DTS6012:1; 
+    uint16_t TFD1_ND06:1;
+    uint16_t TFD1_IO:1;
+    uint16_t TFD1_X:1;
+    
+    uint16_t TFD2_485_1:1;  
+    uint16_t TFD2_485_2:1;  
+    uint16_t TFD2_DTS6012:1; 
+    uint16_t TFD2_ND06:1;
+    uint16_t TFD2_IO:1;
+    uint16_t TFD2_X:1;
+      
+    uint16_t ND06_1:1;   
+    //uint16_t ND06LED_1:1; 
+    
+    uint16_t ND06_2:1;   
+    //uint16_t ND06LED_2:1;  
+  }bit;
+  uint16_t all;
+}SIG_TERR_BITS;
+
+// 整合TFD板卡错误状态
+void integrate_tfd_error(const TFD_BOARD_DATA* tfd_data);
+// 整合ND06板卡错误状态
+void integrate_nd06_error(const ND06_BOARD_DATA* nd06_data);
 
 typedef union 
 {
@@ -166,7 +215,30 @@ extern TestMsg  mtestmsg;
 extern IO_TS_BITS io_test_bit;
 extern IO_TS_BITS io_in_bit;
 extern SIG_ERR_BITS  board_err;
+extern SIG_TERR_BITS  board4_err;
 extern YOUT_ERR_BIT  yo_err_bit;
 
+extern uint8_t homework_switch1;
+extern uint8_t homework_switch2;
+extern uint8_t homework_switch3;
+
+extern uint8_t getRspNd061;
+extern uint8_t getRspNd062;
+extern uint8_t getRspTFD11;
+extern uint8_t getRspTFD12;
+extern uint8_t getRspTFD21;
+extern uint8_t getRspTFD22;
+
+
+extern uint8_t rxTFD1[15] ;  
+extern uint8_t rxTFD2[15] ;
+extern uint8_t rxND1[6] ;
+extern uint8_t rxND2[6] ;
+extern uint8_t rxBuffT[20];
+
+extern uint8_t selectTFD ;
+
+void send_test_end(void);
+void send_test_result(const bool mState);
 // ****************************************************************************************
 #endif
