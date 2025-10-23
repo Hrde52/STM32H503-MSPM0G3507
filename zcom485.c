@@ -454,7 +454,7 @@ uint8_t testNd062[10] = {0XCD, 0x22, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0
 uint8_t testTFD11[10] = {0XAC, 0x11, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x1f};
 uint8_t testTFD12[10] = {0XAC, 0x22, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x2f};//Y5开启，测试485
 uint8_t handTFD1[10] = {0XAC, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f};
-uint8_t handTFD2[10] = {0XAC, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f};//Y5开启，测试485
+uint8_t handTFD2[10] = {0XAC, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x1f};//Y5开启，测试485
 
 uint8_t testTFD21[10] = {0XAC, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1f};
 uint8_t testTFD22[10] = {0XAC, 0x22, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x2f};//Y5开启，测试485
@@ -490,20 +490,12 @@ void boardtest_loop_process()
         
         case 0:
         {
-          if(in_times == 1)
-          {
-            SCL2_TXEN(10, handTFD1);  // 握手
-            
-            DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);
-            
-            SCL2_TXEN(10, handTFD2);  // 握手
-          }
           
-          DL_GPIO_clearPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换485
+          DL_GPIO_clearPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // Y5切换485
           
-          DL_GPIO_clearPins(ROUT_Y3_PORT,ROUT_Y3_PIN_6_PIN); // 打开Y3测试输入X0
-          
-          board4_err.bit.TFD1_IO = DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN)>0? 0:1;
+          DL_GPIO_clearPins(ROUT_Y3_PORT,ROUT_Y3_PIN_6_PIN); // Y3测试输入X0
+          if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN)>0 )
+            board4_err.bit.TFD1_IO =  0;  // 输出
           
           if(in_times == 1 && m_send_message_times1 < 3)
           {
@@ -512,6 +504,31 @@ void boardtest_loop_process()
           }
           
           in_times++;
+          
+          if(in_times == 40)
+          {
+            SCL2_TXEN(10, handTFD1);    // 握手
+            
+          }
+          
+          if((in_times >= 55) && (in_times < 85))
+          {
+            
+            DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN); 
+          }
+          if(in_times == 75)
+          {
+            
+            //DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);        // 切换TFD  
+            SCL2_TXEN(10, handTFD1);  // 握手
+                
+          }
+          
+          if( in_times >= 85)
+          {
+            DL_GPIO_clearPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 切换TFD  
+          }
+          
           
           if(m_send_message_times1< 3 )
           {
@@ -523,7 +540,8 @@ void boardtest_loop_process()
                 {
                   m_send_message_times1++;
                   SCL2_TXEN(10, testTFD11);
-                  board4_err.bit.TFD1_IO = DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN) > 0 ? 0 : 1;
+                  if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN)>0 )
+                    board4_err.bit.TFD1_IO =  0;  // 输出
                 }
                 else
                 {
@@ -539,7 +557,6 @@ void boardtest_loop_process()
            // in_times++;
             if(in_times >= 200)
             {
-              //DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的GHP485连接
               DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // Y5切换485
               
               if((in_times%30) == 0)
@@ -548,7 +565,8 @@ void boardtest_loop_process()
                 {
                   m_send_message_times1++;
                   SCL2_TXEN(10, testTFD12);
-                  board4_err.bit.TFD1_IO = DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN) > 0 ? 0 : 1;
+                  if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN)>0 )
+                    board4_err.bit.TFD1_IO =  0;  // 输出
                 }
                 else
                 {
@@ -605,8 +623,8 @@ void boardtest_loop_process()
          DL_GPIO_clearPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换485
          
          DL_GPIO_clearPins(ROUT_Y3_PORT,ROUT_Y3_PIN_6_PIN); // 打开Y3测试输入0
-         
-         board4_err.bit.TFD2_IO = DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0? 0:1;
+         if(DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0)
+          board4_err.bit.TFD2_IO = 0;
          
          //DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换TFD2
          if(in2_times == 1 && m_send_message_times2 < 3)
@@ -626,7 +644,8 @@ void boardtest_loop_process()
                 {
                   m_send_message_times2++;
                   SCL2_TXEN(10, testTFD21);
-                  board4_err.bit.TFD2_IO = DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0? 0:1;
+                  if(DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0)
+                    board4_err.bit.TFD2_IO = 0;
                 }
                 else
                 {
@@ -650,7 +669,8 @@ void boardtest_loop_process()
                 {
                   m_send_message_times2++;
                   SCL2_TXEN(10, testTFD22);
-                  board4_err.bit.TFD2_IO = DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0? 0:1;
+                  if(DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0)
+                    board4_err.bit.TFD2_IO = 0;
                 }
                 else
                 {
@@ -709,8 +729,7 @@ void boardtest_loop_process()
     }
     case 1:
     {
-//      DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换ND06
-//      DL_GPIO_clearPins(ROUT_Y6_PORT,ROUT_Y6_PIN_7_PIN); 
+
       if(nd_times == 1 && m_send_message_times3 < 3){
         send_shake_hand();
        }
@@ -719,7 +738,6 @@ void boardtest_loop_process()
           
       if(m_send_message_times3< 3 )
       {       
-        //DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的485连接
         
         if(nd_times >= 100)
         {
@@ -758,8 +776,7 @@ void boardtest_loop_process()
       }
       else if(m_send_message_times3 > 3 && m_send_message_times3< 6 )
       {
-       //nd_times++;
-//        DL_GPIO_clearPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的GHP485连接
+
        if(nd_times == 201 && m_send_message_times3 == 4)
        {
         send_shake_hand();
