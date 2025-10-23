@@ -623,12 +623,17 @@ void ProcessGHPTooling(uint8_t *data)
         HAL_GPIO_WritePin(TOF_LED_GPIO_Port, TOF_LED_Pin, GPIO_PIN_SET);
         
 				if(PARA_TABLE_USE.data.passToolingStatus == 0x0)
+				{
 					PARA_TABLE_USE.data.passToolingStatus = 0x01;
+					paraTable_Write();
+				}
 				else if(PARA_TABLE_USE.data.passToolingStatus == 0x01)
+				{
 					PARA_TABLE_USE.data.passToolingStatus = 0x02;
-				
-        paraTable_Write();
-        //HAL_NVIC_SystemReset();
+					paraTable_Write();
+        }
+        
+				HAL_NVIC_SystemReset();
     }
 		
     return;

@@ -123,7 +123,7 @@ int main(void)
 	//paraTable_Reset();
 	paraTable_Init();
 	
-	//MX_IWDG_Init();
+	MX_IWDG_Init();
 
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
@@ -136,11 +136,11 @@ int main(void)
 	HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, 1);
 	HAL_Delay(500);
 
-			//HAL_IWDG_Refresh(&hiwdg); 
+			HAL_IWDG_Refresh(&hiwdg); 
 		
     HAL_Delay(1000);
 
-			//HAL_IWDG_Refresh(&hiwdg);  
+			HAL_IWDG_Refresh(&hiwdg);  
 		
 		
     MX_USART3_UART_Init();
@@ -166,7 +166,7 @@ int main(void)
 		if ( TIME_1S_FLAG == 1 ) 
 		{
        TIME_1S_FLAG = 0;
-			//HAL_IWDG_Refresh(&hiwdg);
+			HAL_IWDG_Refresh(&hiwdg);
 			if (waitToolingTimes <= 10) 
 			{
 				waitToolingTimes++;
@@ -253,7 +253,7 @@ void SystemClock_Config(void)
 uint8_t getIN_IO = 0;
 void ToolingTest()
 {
-		//HAL_IWDG_Refresh(&hiwdg);
+		HAL_IWDG_Refresh(&hiwdg);
     LEDON;
     testIO();
     initTooling();
@@ -285,7 +285,7 @@ void ToolingTest()
 			{
 					TIME_1S_FLAG = 0;
 					dts6012_start();
-					//HAL_IWDG_Refresh(&hiwdg); 
+					HAL_IWDG_Refresh(&hiwdg); 
 				
 					if (waitToolingTimes <= 10) 
 					{
@@ -306,7 +306,7 @@ void normalWork()
 		MX_USART2_UART_Init();
 		HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
 		LEDOFF;
-		//HAL_IWDG_Refresh(&hiwdg);
+		HAL_IWDG_Refresh(&hiwdg);
 	
 	  RS485_PDA_RX_ENABLE();
     HAL_UART_Receive_IT(&RS485_PDA_USART, rxDBuffPDA, 1);
@@ -340,7 +340,7 @@ void normalWork()
                 TIME_1S_FLAG = 0;
                 dts6012_start();
 
-                //HAL_IWDG_Refresh(&hiwdg); 
+                HAL_IWDG_Refresh(&hiwdg); 
 
             }
             break;
@@ -368,7 +368,7 @@ void normalWork()
                 dts6012_start();
 
                 
-									//HAL_IWDG_Refresh(&hiwdg); 
+									HAL_IWDG_Refresh(&hiwdg); 
 
             }
             break;

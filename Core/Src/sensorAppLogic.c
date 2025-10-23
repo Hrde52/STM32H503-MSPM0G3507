@@ -541,7 +541,7 @@ void cargoLift_ObjectDetection(void)
         num_of_pixel_occluded = 0;
         for (i = 0; i < 4; i++)
         {
-            for (j = 0; j < 4; j++) // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷实锟斤拷锟脚碉拷锟斤拷锟斤拷锟洁反
+            for (j = 0; j < 4; j++) // 锟斤拷实锟斤拷锟脚碉拷锟斤拷锟斤拷锟洁反
             {
                 //  printf("%5d\t",dep[i*4+j]);
                 if ((nd06_data.dep[i * 4 + j] >= PARA_TABLE_USE.data.cargoLift_nd06MinChkDistance) &&
@@ -592,7 +592,7 @@ void cargoLift_ObjectDetection(void)
     }
     else
     {
-        if (timesND06Failed++ > 3) // 锟斤拷锟斤拷3锟斤拷失锟斤拷锟斤拷锟斤拷锟斤拷ND06
+        if (timesND06Failed++ > 3) // 锟斤拷锟斤拷3锟斤拷失ND06
         {
             E001 = 1;
             timesND06Failed = 0;
@@ -762,7 +762,7 @@ void cargoLift_sensor_status_control(void)
         sensor_status = sensor_status;
     }
 
-    /*锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷停*/
+    /*锟斤拷停*/
     if ((sensor_old_status != sensor_status) &&
         ((sensor_status == NormalWorking_STATUS) ||
          (sensor_status == DistanceThresholdLearning_STATUS)))
@@ -819,9 +819,9 @@ void sensor_action_control(void)
         ClosingTimeLearningReqFlg = 0;
         LEDTOGGLE; // LED锟斤拷转
         ClosingTimeLearningSuccessFlg = 0;
-        ClosingTimeLearning(); // 锟斤拷锟斤拷时锟斤拷学习
+        ClosingTimeLearning(); // 
     }
-    else if (sensor_status == NormalWorking_STATUS) // 锟斤拷锟斤拷锟斤拷锟斤拷
+    else if (sensor_status == NormalWorking_STATUS) // 
     {
         ClosingTimeLearningReqFlg = 0;
         ObjectDetection();
@@ -829,11 +829,11 @@ void sensor_action_control(void)
 
         detectError();
 
-        // IO锟斤拷锟斤拷锟斤拷锟�1锟�7
+        // IO
         if (stopIOOutputFlag == 1)
         {
             LEDOFF;
-            HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET); // IO锟截憋拷
+            HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET); // IO
         }
         else
         {
@@ -841,14 +841,14 @@ void sensor_action_control(void)
             if (ObjectIsDetectedFlag == 1)
             {
                 LEDON;
-                HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET); // IO锟斤拷锟�1锟�7
+                HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET); // IO
             }
             else
             {
                 LEDOFF;
-                HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET); // IO锟截憋拷
+                HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET); // IO
                 //     LEDON;
-                // HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET); // IO锟斤拷锟�1锟�7
+                // HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET); // IO
             }
         }
     }
