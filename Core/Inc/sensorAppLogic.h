@@ -91,6 +91,8 @@ extern uint8_t stopIOOutputFlag;
 
 extern ERR_DATA ErrData;
 
+extern uint32_t cargoLift_nd06LearnValue[16];
+
 uint8_t DistanceThresholdLearning(void);
 void cargolift_DistanceThresholdLearning(void);
 void ClosingTimeLearning();

@@ -17,6 +17,7 @@
 
 ERR_DATA ErrData = {0};
 ND06_DATA nd06_data = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+ND06_DATA nd06_DLdata = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 DTS6012_DATA dts6012_data = {0, 0, 0, 0};
 
 uint32_t DistanceThresholdLearningSuccessFlg = 0;
@@ -25,9 +26,13 @@ uint32_t dts6012DistanceThreshold = 500;
 
 uint32_t nd06DistancdLearnValue = 0;
 uint32_t nd06DistanceThreshold = 500;
-
+uint32_t cargoLift_nd06LearnValue[16] = {
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
 uint32_t dts6012DistanceThresholdLearningSuccessFlg = 0;
 uint32_t nd06DistanceThresholdLearningSuccessFlg = 0;
+
 uint32_t objectDCnt_P = 0;
 uint32_t objectDCnt_H = 0;
 
@@ -61,66 +66,104 @@ uint8_t DistanceThresholdLearning(void)
 
     now_DistanceThresholdLearning_Flg = 1;
 */
+    uint8_t dtsLearnTimes = 0;
+    uint8_t ndLearnTimes = 0;
 
     HAL_StatusTypeDef status = HAL_OK;
 
-    if (dts6012DistanceThresholdLearningSuccessFlg == 0)
+    while ((dts6012DistanceThresholdLearningSuccessFlg == 0) && dtsLearnTimes < 5)
     {
+        dtsLearnTimes++;
+
         status = dts6012_getDepthAndAmp(&dts6012_data);
         if (status == HAL_OK)
         {
-            if ((dts6012_data.firstPeakDistance > PARA_TABLE_USE.data.dts6012MinChkDistance) && (dts6012_data.firstPeakDistance < PARA_TABLE_USE.data.dts6012MaxChkDistance))
+            if ((dts6012_data.firstPeakDistance > PARA_TABLE_USE.data.dts6012MinChkDistance) /* && (dts6012_data.firstPeakDistance < PARA_TABLE_USE.data.dts6012MaxChkDistance)*/)
             {
                 // nd06DistancdLearnValue  dts6012DistancdLearnValue
                 dts6012DistancdLearnValue = dts6012_data.firstPeakDistance;
                 dts6012DistanceThresholdLearningSuccessFlg = 1;
+                break;
             }
-        }
-        else
-        {
-            DistanceThresholdLearning();
-            dts6012DistanceThresholdLearningSuccessFlg = 0;
         }
     }
 
     int32_t ret = ND06AV1C_ERROR_NONE;
-    uint8_t nd06PixelValueSum = 0;
+    
     int sum_cnt = 0;
-    if (nd06DistanceThresholdLearningSuccessFlg == 0)
+
+    while ((nd06DistanceThresholdLearningSuccessFlg == 0) && (ndLearnTimes < 255))
     {
-        ret = ND06AV1C_GetDepthAndAmpData(&g_nd06av1c_device, (uint16_t *)nd06_data.amp, (uint16_t *)nd06_data.dep);
+			uint32_t nd06PixelValueSum = 0;
+        ndLearnTimes++;
+			
+        ret = ND06AV1C_GetDepthAndAmpData(&g_nd06av1c_device, (uint16_t *)nd06_DLdata.amp, (uint16_t *)nd06_DLdata.dep);
         int i = 0;
         int j = 0;
         if (ret == ND06AV1C_GET_DATA_SUCCESS)
         {
+//					if(PARA_TABLE_USE.data.functionChioce == 0x11)
+//					{
             for (i = 2; i < 4; i++)
             {
                 for (j = 0; j < 4; j++)
                 {
-                    nd06PixelValueSum = nd06PixelValueSum + nd06_data.dep[i * 4 + j];
+									if( nd06_DLdata.dep[i * 4 + j] < 65300)
+										{
+                    cargoLift_nd06LearnValue[i * 4 + j] = nd06_DLdata.dep[i * 4 + j];
+                    nd06PixelValueSum = nd06PixelValueSum + nd06_DLdata.dep[i * 4 + j];
                     sum_cnt++;
+										}
                 }
             }
+//					}
+//					else if(PARA_TABLE_USE.data.functionChioce == 0x22)
+//					{
+//            for (i = 0; i < 4; i++)
+//            {
+//                for (j = 0; j < 4; j++)
+//                {
+//									if( nd06_DLdata.dep[i * 4 + j] < 65300)
+//										{
+//                    cargoLift_nd06LearnValue[i * 4 + j] = nd06_DLdata.dep[i * 4 + j];
+//                    nd06PixelValueSum = nd06PixelValueSum + nd06_DLdata.dep[i * 4 + j];
+//                    sum_cnt++;
+//										}
+//                }
+//            }
+//					}
+						if (sum_cnt > 0)  // 防止除零错误
+						{
+								nd06DistancdLearnValue = nd06PixelValueSum / sum_cnt;
 
-            nd06DistancdLearnValue = nd06PixelValueSum / sum_cnt;
-
-            nd06DistanceThresholdLearningSuccessFlg = 1;
-            DistanceThresholdLearningFailed_Flg = 0;
-        }
-        else if (ret == ND06AV1C_ERROR_NONE)
-        {
-            DistanceThresholdLearning();
-            // printf("do nothing!\r\n");
-        }
-        else
-        {
-            // DistanceThresholdLearning();
-            // printf("nd06av1c get dataInfo fail!\r\n");
-            nd06DistanceThresholdLearningSuccessFlg = 0;
-            return 0;
+								nd06DistanceThresholdLearningSuccessFlg = 1;
+								DistanceThresholdLearningFailed_Flg = 0;
+							break;
+						}
         }
     }
 
+    if ((dts6012DistanceThresholdLearningSuccessFlg == 1) && (nd06DistanceThresholdLearningSuccessFlg == 1))   
+    {
+        DistanceThresholdLearningSuccessFlg = 1;
+        now_DistanceThresholdLearning_Flg = 0;
+        times_DistanceThresholdLearn = 0;
+        dts6012DistanceThresholdLearningSuccessFlg = 0;
+        nd06DistanceThresholdLearningSuccessFlg = 0;
+
+//        if (PARA_TABLE_USE.data.dts6012StudyDistance != dts6012DistancdLearnValue)
+//        {
+//            // PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
+//        }
+
+//        if (PARA_TABLE_USE.data.nd06StudyDistance != nd06DistancdLearnValue)
+//        {
+//            // PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+//        }
+        sensor_status = 6;
+        return 1;
+    }
+/*
     if ((dts6012DistanceThresholdLearningSuccessFlg == 1) && (nd06DistanceThresholdLearningSuccessFlg == 1))
     {
         DistanceThresholdLearningSuccessFlg = 1;
@@ -141,6 +184,7 @@ uint8_t DistanceThresholdLearning(void)
         sensor_status = 6;
         return 1;
     }
+*/
     return 0;
 }
 
@@ -148,7 +192,7 @@ uint32_t nd06PixelAddCnt[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 uint32_t nd06StudyDep[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 uint32_t nd06AddCnt = 0;
 uint32_t dts6012AddCnt = 0;
-void cargolift_DistanceThresholdLearning(void) 
+void cargolift_DistanceThresholdLearning(void)
 {
     HAL_StatusTypeDef status = HAL_OK;
     int32_t ret = ND06AV1C_ERROR_NONE;
@@ -226,7 +270,7 @@ void cargolift_DistanceThresholdLearning(void)
                 }
             }
 
-            // ����ￄ1�71ￄ1�772/3���໥��䣬�ￄ1�71ￄ1�771����0ֵ�����õ�2����䣬�ￄ1�71ￄ1�774����0ֵ���õ�3����ￄ1�71ￄ1�77
+            
             j = 1;
             for (i = 0; i < 4; i++)
             {
@@ -261,13 +305,13 @@ void cargolift_DistanceThresholdLearning(void)
                 }
             }
 
-            /*���ĳ��ȫ΄1�71ￄ1�770�����õ���TOF����*/
+            /*���ĳ��ȫ΄1�71ￄ1�770�����õ���TOF����*/
             memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, nd06StudyDep, sizeof(nd06StudyDep));
             paraTable_Write();
             nd06DistanceThresholdLearningSuccessFlg = 1;
 
-            //			memset(nd06StudyDep,0,sizeof(nd06StudyDep));  //��ջ������ￄ1�71ￄ1�77
-            //			memset(nd06PixelAddCnt,0,sizeof(nd06PixelAddCnt));  //��ջ������ￄ1�71ￄ1�77
+            //			memset(nd06StudyDep,0,sizeof(nd06StudyDep));  //��ջ������ￄ1�71ￄ1�77
+            //			memset(nd06PixelAddCnt,0,sizeof(nd06PixelAddCnt));  //��ջ������ￄ1�71ￄ1�77
             //			nd06AddCnt = 0;
         }
     }
@@ -292,9 +336,9 @@ void ClosingTimeLearning()
     int32_t ret = ND06AV1C_ERROR_NONE;
     int i = 0, j = 0;
 
-    now_ClosingTimeLearning_Flg = 1; 
+    now_ClosingTimeLearning_Flg = 1;
 
-    
+    // 1. 等待门打开状态消失，记录起始时间
     if (!learningStarted && currentDoorState != STATE_OPENED)
     {
         startTick = HAL_GetTick();
@@ -302,7 +346,7 @@ void ClosingTimeLearning()
         pixelOccludedFlag = 0;
     }
 
-    
+    // 2. 只有在学习已开始时才继续
     if (learningStarted)
     {
         ret = ND06AV1C_GetDepthAndAmpData(&g_nd06av1c_device, (uint16_t *)nd06_data.amp, (uint16_t *)nd06_data.dep);
@@ -323,7 +367,7 @@ void ClosingTimeLearning()
             }
         }
 
-        
+        // 3. 检测到像素遮挡，记录终止时间
         if (pixelOccludedFlag)
         {
             uint32_t closeTimeCnt = HAL_GetTick() - startTick; // ����ʱ�䣨ms��
@@ -332,7 +376,7 @@ void ClosingTimeLearning()
             times_ClosingTimeLearning = 0;
             learningStarted = 0;
 
-            // ����ѧϰ��ￄ1�71ￄ1�77
+            // 保存学习结果
             if (PARA_TABLE_USE.data.closingDoorTime != closeTimeCnt)
             {
                 PARA_TABLE_USE.data.closingDoorTime = closeTimeCnt;
@@ -461,7 +505,7 @@ void ObjectDetection(void)
     else
     {
         ObjectIsDetectedFlag = 0;
-        prevFlag = 0; 
+        prevFlag = 0;
     }
 
     if (dts6012_data.objDetectFlag == 1)
@@ -492,8 +536,6 @@ void ObjectDetection(void)
         regionalObjectDetected_flag_ND06 = 0;
     }
 }
-
-
 
 void cargoLift_ObjectDetection(void)
 {
@@ -541,7 +583,7 @@ void cargoLift_ObjectDetection(void)
         num_of_pixel_occluded = 0;
         for (i = 0; i < 4; i++)
         {
-            for (j = 0; j < 4; j++) // ��ʵ���ŵ������෴
+            for (j = 0; j < 4; j++) // 像素左右与实际门的左右相反
             {
                 //  printf("%5d\t",dep[i*4+j]);
                 if ((nd06_data.dep[i * 4 + j] >= PARA_TABLE_USE.data.cargoLift_nd06MinChkDistance) &&
@@ -631,7 +673,7 @@ void cargoLift_ObjectDetection(void)
     {
         // if (IOoutDelayCnt++ >= 200) {  // ���ݵ���ʱ
         if (IOoutDelayCnt++ >= 200)
-        { 
+        {
             ObjectIsDetectedFlag = 0;
             IOoutDelayCnt = 0;
             IOoutDelayFlag = 0;
@@ -646,7 +688,7 @@ void cargoLift_ObjectDetection(void)
     }
 }
 
-uint32_t sensor_status = NormalWorking_STATUS; // sensor_status��ʼ״̬ΪNormalWorking_STATUS
+uint32_t sensor_status = NormalWorking_STATUS; 
 uint32_t sensor_old_status = Unknown_STATUS;
 void sensor_status_control(void)
 {
@@ -657,14 +699,14 @@ void sensor_status_control(void)
     }
     if (ERR_D != 0)
     {
-//        sensor_status = Fault_STATUS;
+        //        sensor_status = Fault_STATUS;
 
-//        if (sensor_self_check())
-//        {
-//            ERR_D = 0;
-//            sensor_status = NormalWorking_STATUS;
-//        }
-//        return; // ERR_D = 0;
+        //        if (sensor_self_check())
+        //        {
+        //            ERR_D = 0;
+        //            sensor_status = NormalWorking_STATUS;
+        //        }
+        //        return; // ERR_D = 0;
     }
     else
     {
@@ -728,10 +770,10 @@ void cargoLift_sensor_status_control(void)
     }
     else if (ERR_D != 0)
     {
-//        sensor_status = Fault_STATUS;
-//        HAL_NVIC_SystemReset();
-//        ERR_D = 0;
-//        sensor_status = NormalWorking_STATUS;
+        //        sensor_status = Fault_STATUS;
+        //        HAL_NVIC_SystemReset();
+        //        ERR_D = 0;
+        //        sensor_status = NormalWorking_STATUS;
     }
     else if (((sensor_status == NormalWorking_STATUS) ||
               (sensor_status == Idle_STATUS)) &&
@@ -797,31 +839,29 @@ void sensor_action_control(void)
     {
         LEDON;
     }
-    else if (sensor_status == 2 && DistanceThresholdLearningReqFlg == 1)
+    else if (sensor_status == DistanceThresholdLearning_STATUS  &&(DistanceThresholdLearningSuccessFlg == 0)/*&& DistanceThresholdLearningReqFlg == 1*/)
     {
         // currentDoorState == STATE_CLOSED
-        DistanceThresholdLearningReqFlg = 0;
+        //DistanceThresholdLearningReqFlg = 0;
         // LEDTOGGLE;                   // LED
-        if (currentDoorState != STATE_CLOSED)
+       /* if (currentDoorState != STATE_CLOSED)
         {
-            while (currentDoorState != STATE_OPENED)
-            {
-                HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
-            }
+            HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
+            
         }
-        else
+        else */if ((currentDoorState == STATE_CLOSED) || (currentDoorState == STATE_OPENED) )
         {
             DistanceThresholdLearning(); // ����ѧϰ
         }
     }
-    else if (sensor_status == 2 && ClosingTimeLearningReqFlg == 1)
+    else if (sensor_status == DistanceThresholdLearning_STATUS && ClosingTimeLearningReqFlg == 1)
     {
         ClosingTimeLearningReqFlg = 0;
         LEDTOGGLE; // LED��ת
         ClosingTimeLearningSuccessFlg = 0;
-        ClosingTimeLearning(); // 
+        ClosingTimeLearning(); //
     }
-    else if (sensor_status == NormalWorking_STATUS) // 
+    else if (sensor_status == NormalWorking_STATUS) //
     {
         ClosingTimeLearningReqFlg = 0;
         ObjectDetection();
@@ -869,11 +909,11 @@ void cargoLift_sensor_action_control(void)
 {
     if (sensor_status == NotDetected_STATUS)
     {
-        //LEDON; 
+        // LEDON;
     }
     else if (sensor_status == Fault_STATUS)
     {
-       // LEDON; 
+        // LEDON;
     }
     else if (sensor_status == DistanceThresholdLearning_STATUS)
     {
@@ -881,11 +921,11 @@ void cargoLift_sensor_action_control(void)
         if (ledCnt++ > 100)
         {
             ledCnt = 0;
-            LEDTOGGLE; 
+            LEDTOGGLE;
         }
-        cargolift_DistanceThresholdLearning(); 
+        cargolift_DistanceThresholdLearning();
     }
-    else if (sensor_status == NormalWorking_STATUS  && cargoLift_IN)
+    else if (sensor_status == NormalWorking_STATUS && cargoLift_IN)
     {
         cargoLift_ObjectDetection();
         if (ObjectIsDetectedFlag == 1)
@@ -900,10 +940,10 @@ void cargoLift_sensor_action_control(void)
         }
     }
     else
-		{
-			LEDOFF;
-			HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET);
-		}
+    {
+        LEDOFF;
+        HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET);
+    }
 
     //    else if(sensor_status == Idle_STATUS)
     //    {
@@ -914,27 +954,26 @@ void cargoLift_sensor_action_control(void)
 
 void ND06_Reset(void)
 {
-    HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, GPIO_PIN_RESET); 
-    HAL_Delay(100);                                                    
+    HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, GPIO_PIN_RESET);
+    HAL_Delay(100);
 
-    HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, GPIO_PIN_SET);   
-    HAL_Delay(500);                                                   
+    HAL_GPIO_WritePin(ND06_EN_GPIO_Port, ND06_EN_Pin, GPIO_PIN_SET);
+    HAL_Delay(500);
 }
 
 uint8_t detectError()
 {
     if (ObjectIsDetectedFlag == 1)
     {
-        
+
         // if (currentDoorState == STATE_CLOSING)
         closingNoObjectCnt = 0;
         stopIOOutputFlag = 0;
         E004 = 0;
 
-        
         if (currentDoorState == STATE_OPENING && pastDoorState == STATE_CLOSING)
         {
-            objectDetectionErrorCnt = 0; 
+            objectDetectionErrorCnt = 0;
             stopIOOutputFlag = 0;
             E003 = 0;
 
@@ -942,13 +981,13 @@ uint8_t detectError()
         }
         else if (currentDoorState == STATE_OPENED && pastDoorState == STATE_CLOSING)
         {
-            objectDetectionErrorCnt = 0; 
+            objectDetectionErrorCnt = 0;
             stopIOOutputFlag = 0;
             E002 = 0;
 
             pastDoorState = STATE_CLOSING;
         }
-        
+
         else if (currentDoorState == STATE_CLOSED && pastDoorState == STATE_CLOSING)
         {
             pastDoorState = STATE_CLOSED;
@@ -972,7 +1011,7 @@ uint8_t detectError()
     {
         objectDetectionErrorCnt = 0;
         stopIOOutputFlag = 0;
-        
+
         if (currentDoorState == STATE_CLOSED && pastDoorState == STATE_CLOSING)
         {
             if (closingNoObjectCnt < 20)
@@ -983,9 +1022,9 @@ uint8_t detectError()
 
             if (closingNoObjectCnt >= 10)
             {
-                E004 = 1; 
+                E004 = 1;
                 stopIOOutputFlag = 1;
-                closingNoObjectCnt = 0; 
+                closingNoObjectCnt = 0;
             }
             else
             {

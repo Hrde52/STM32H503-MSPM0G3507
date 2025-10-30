@@ -66,11 +66,26 @@ const unsigned char auchCRCLo[] = {
     0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42,
     0x43, 0x83, 0x41, 0x81, 0x80, 0x40};
 
-unsigned short CalcCRC16(unsigned char *puchMsg, unsigned short usDataLen) {
+uint16_t show_pktcrc;
+uint16_t show_crc;
+uint8_t m_sensorType111;
+		
+uint8_t txBuffer1[50] = {0};
+uint8_t txBuffer2[144] = {0};
+uint8_t STOP_DistanceThresholdLearning_ReqFlg = 0;
+uint8_t STOP_ClosingTimeLearningReqFlg = 0;
+uint8_t txBuffer3[116] = {0};
+uint8_t setBeginDebug;
+uint8_t txBuffer4[162] = {0};
+uint8_t txBuffer5[24] = {0};
+
+unsigned short CalcCRC16(unsigned char *puchMsg, unsigned short usDataLen)
+{
     unsigned char uchCRCHi = 0xFF; // ?CRC?????
     unsigned char uchCRCLo = 0xFF; // ?CRC?????
     unsigned int uIndex;           // CRC??????
-    while (usDataLen--) {          // ???????
+    while (usDataLen--)
+    { // ???????
 
         uIndex = uchCRCLo ^ *puchMsg++;
         uchCRCLo = uchCRCHi ^ auchCRCHi[uIndex];
@@ -79,40 +94,41 @@ unsigned short CalcCRC16(unsigned char *puchMsg, unsigned short usDataLen) {
     return (uchCRCHi << 8 | uchCRCLo);
 }
 
-void WriteU32LittleEndian(uint8_t *buf, uint32_t value) {
+void WriteU32LittleEndian(uint8_t *buf, uint32_t value)
+{
     buf[0] = (value >> 0) & 0xFF;
     buf[1] = (value >> 8) & 0xFF;
     buf[2] = (value >> 16) & 0xFF;
     buf[3] = (value >> 24) & 0xFF;
 }
 
-void WriteU16LittleEndian(uint8_t *buf, uint32_t value) {
+void WriteU16LittleEndian(uint8_t *buf, uint32_t value)
+{
     buf[0] = (value >> 0) & 0xFF;
     buf[1] = (value >> 8) & 0xFF;
     // buf[2] = (value >> 16) & 0xFF;
     // buf[3] = (value >> 24) & 0xFF;
 }
 
-uint16_t show_pktcrc;
-uint16_t show_crc;
-uint8_t m_sensorType111;
-// ?????????
-void ProcessPacket(SensorProtocol *pkt) {
-    
-    if (pkt->head != HEADER || pkt->version != 0x01) {
+
+void ProcessPacket(SensorProtocol *pkt)
+{
+
+    if (pkt->head != HEADER || pkt->version != 0x01)
+    {
         return;
     }
 
-    
     uint16_t calc_crc = CalcCRC16((uint8_t *)&pkt->cmd, pkt->length); // 0x0129 0x01
     show_pktcrc = pkt->crc;                                           // 0x005d
     show_crc = calc_crc;
     // CRC
-    if (calc_crc != pkt->crc) {
-
+    if (calc_crc != pkt->crc)
+    {
     }
 
-    switch (PARA_TABLE_USE.data.functionChioce) {
+    switch (PARA_TABLE_USE.data.functionChioce)
+    {
     case 0x11:
         m_sensorType111 = 1;
         break;
@@ -126,8 +142,9 @@ void ProcessPacket(SensorProtocol *pkt) {
         break;
     }
 
-    switch (pkt->cmd) {
-    case HANDSHAKE_CMD: // 
+    switch (pkt->cmd)
+    {
+    case HANDSHAKE_CMD: //
         HandleHandshake(pkt);
         // AA 55 20 80 01 09 00 78 5E 01 00 06 19 05 16 0F 18 2E  // PDA HAND
         break;
@@ -157,10 +174,10 @@ void ProcessPacket(SensorProtocol *pkt) {
     }
 }
 
-uint8_t txBuffer1[50] = {0};
-// ?????????
-void HandleHandshake(SensorProtocol *pkt) {
-    // ??????????
+
+
+void HandleHandshake(SensorProtocol *pkt)
+{
     uint8_t *m_data = pkt->data1;
     uint8_t m_year = m_data[0];
     uint8_t m_month = m_data[1];
@@ -200,21 +217,22 @@ void HandleHandshake(SensorProtocol *pkt) {
 
     // ???data1~data12 (ASCII "20250521")
     const char *device_IDStr = "20250712";
-		uint8_t lenDeviceIDStr = strlen(device_IDStr);
-		if ((offset + lenDeviceIDStr) < 50) 
-    memcpy(data2 + offset, device_IDStr, lenDeviceIDStr);
+    uint8_t lenDeviceIDStr = strlen(device_IDStr);
+    if ((offset + lenDeviceIDStr) < 50)
+        memcpy(data2 + offset, device_IDStr, lenDeviceIDStr);
     offset += strlen(device_IDStr);
-    for (int i = strlen(device_IDStr); i < 8; i++) {
+    for (int i = strlen(device_IDStr); i < 8; i++)
+    {
         data2[offset++] = ' '; // ?????
     }
-
 
     // uint32_t program_version = PARA_TABLE_USE.data.programVerison;
     const char *program_version = "01.00.00";
     memcpy(data2 + offset, program_version, strlen(program_version));
     offset += strlen(program_version);
 
-    for (int i = strlen(program_version); i < 8; i++) {
+    for (int i = strlen(program_version); i < 8; i++)
+    {
         data2[offset++] = ' '; // ?????
     }
 
@@ -227,11 +245,13 @@ void HandleHandshake(SensorProtocol *pkt) {
     memcpy(data2 + offset, tool_fixtureID, strlen(tool_fixtureID));
     offset += strlen(tool_fixtureID);
     // ???????4????????????????????
-    for (int i = strlen(tool_fixtureID); i < 4; i++) {
+    for (int i = strlen(tool_fixtureID); i < 4; i++)
+    {
         data2[offset++] = ' '; // ?????
     }
 
-    while (offset <= 27) {
+    while (offset <= 27)
+    {
         data2[offset++] = 0;
     }
 
@@ -245,8 +265,9 @@ void HandleHandshake(SensorProtocol *pkt) {
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer1, total_len_resp, 100);
 }
 
-uint8_t txBuffer2[144] = {0};
-void HandleHeartbeat(SensorProtocol *pkt) {
+
+void HandleHeartbeat(SensorProtocol *pkt)
+{
     // ID.
     // data1
     uint8_t *m_data1 = pkt->data1;
@@ -278,9 +299,12 @@ void HandleHeartbeat(SensorProtocol *pkt) {
     uint16_t offset = 0;
 
     // DATA1
-    if (returnSensorType != m_sensorType111) {
+    if (returnSensorType != m_sensorType111)
+    {
         resp_data[offset++] = 0;
-    } else {
+    }
+    else
+    {
         resp_data[offset++] = m_sensorType111;
     }
     resp_data[offset++] = 0;
@@ -297,7 +321,8 @@ void HandleHeartbeat(SensorProtocol *pkt) {
 
     offset += 4;
     // byte13????????????
-    switch (sensor_status) {
+    switch (sensor_status)
+    {
     case NormalWorking_STATUS:
         resp_data[offset++] = 0XAA;
         break;
@@ -329,8 +354,9 @@ void HandleHeartbeat(SensorProtocol *pkt) {
         0xAA ??????????
         0x55 ??????
     ?????
-    */ 
-    switch (ds6012OutputEN) {
+    */
+    switch (ds6012OutputEN)
+    {
     case 1:
         resp_data[offset++] = 0XAA;
         resp_data[offset++] = dts6012_data.objDetectFlag;
@@ -344,7 +370,8 @@ void HandleHeartbeat(SensorProtocol *pkt) {
     }
     offset += 2;
 
-    switch (nd06OutputEN) {
+    switch (nd06OutputEN)
+    {
     case 1:
         resp_data[offset++] = 0XAA;
         resp_data[offset++] = nd06AV1C_objDetectFlag;
@@ -383,8 +410,10 @@ void HandleHeartbeat(SensorProtocol *pkt) {
     // ???????
     uint32_t pixel_dist;
     // uint8_t step = 9;
-    for (uint8_t i = 0; i < 4; i++) {
-        for (uint8_t j = 0; j < 4; j++) {
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        for (uint8_t j = 0; j < 4; j++)
+        {
             pixel_dist = nd06_data.dep[i * 4 + j];
             WriteU16LittleEndian(&resp_data[offset], pixel_dist);
             offset += 2;
@@ -393,8 +422,10 @@ void HandleHeartbeat(SensorProtocol *pkt) {
 
     // ??????
     uint32_t pixel_amp;
-    for (uint8_t i = 0; i < 4; i++) {
-        for (uint8_t j = 0; j < 4; j++) {
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        for (uint8_t j = 0; j < 4; j++)
+        {
             pixel_amp = nd06_data.amp[i * 4 + j];
             WriteU16LittleEndian(&resp_data[offset], pixel_amp);
             offset += 2;
@@ -422,11 +453,11 @@ void HandleHeartbeat(SensorProtocol *pkt) {
     return;
 }
 
-uint8_t STOP_DistanceThresholdLearning_ReqFlg = 0;
-uint8_t STOP_ClosingTimeLearningReqFlg = 0;
-uint8_t txBuffer3[116] = {0};
-void HandleControl(SensorProtocol *pkt) {
-    // ???????ID??????.
+
+void HandleControl(SensorProtocol *pkt)
+{
+
+    // PDA->SENSOR
     // data1
     uint8_t *m_data1 = pkt->data1;
     uint8_t returnSensorType = m_data1[0]; // L1 BYTE1
@@ -435,7 +466,7 @@ void HandleControl(SensorProtocol *pkt) {
     // data2
     uint8_t *m_data = &m_data1[pkt->l1]; // 2  L2
     char str_sensorAddr[9] = {0};        // char *str_sensorAddr[13];
-    uint8_t len = m_data[0];             // ??????? L2
+    uint8_t len = m_data[0];             //
     if (len > 8)
         len = 8;
     strncpy(str_sensorAddr, (char *)&m_data[1], 8); // m_data1[2]-m_data1[9]???ID
@@ -443,32 +474,35 @@ void HandleControl(SensorProtocol *pkt) {
 
     /*
         data3
-        - 0x00: ??????????��?????
-        - 0xAA??????????
-        - 0X55?????
+        - 0x00:
+        - 0xAA
+        - 0X55
     */
     // L3 = 30 m_data1[10]
     uint8_t *m_data3 = &m_data1[11];       // 2+1+8   ???
-    uint8_t setBeginDebug = m_data3[1];    // ??????????
-    uint8_t setDts6012En_PDA = m_data3[2]; // ??????1??????????
-    uint8_t setNd06En_PDA = m_data3[3];    // ??????2??????????
+    setBeginDebug = m_data3[1];    //
+    uint8_t setDts6012En_PDA = m_data3[2]; //
+    uint8_t setNd06En_PDA = m_data3[3];    //
     // byte4-5?????
-    uint8_t set_distance_learn = m_data3[6];   // ??????????
-    uint8_t set_close_time_learn = m_data3[7]; // ?????????????
+    uint8_t set_distance_learn = m_data3[6];   //
+    uint8_t set_close_time_learn = m_data3[7]; //
 
-    // ?????????
-    if (setBeginDebug == 0XAA) {
-        sensor_status = 2;  // setup_STATUS
+    // SENSOR -> PDA
+    if (setBeginDebug == 0XAA)
+    {
+        sensor_status = DistanceThresholdLearning_STATUS; // setup_STATUS
     }
-    // ???????
-    else if (setBeginDebug == 0X55) {
-        sensor_status = 1;  // NormalWorking_STATUS
+    //
+    else if (setBeginDebug == 0X55)
+    {
+        sensor_status = NormalWorking_STATUS; // NormalWorking_STATUS
     }
 
-
-    if (sensor_status == 2) {
+    if (sensor_status == DistanceThresholdLearning_STATUS)
+    {
         // dts6012 IO
-        switch (setDts6012En_PDA) {
+        switch (setDts6012En_PDA)
+        {
         case 0xAA:
             //  = 1;
             break;
@@ -482,7 +516,8 @@ void HandleControl(SensorProtocol *pkt) {
         }
 
         // ND06 IO
-        switch (setNd06En_PDA) {
+        switch (setNd06En_PDA)
+        {
         case 0xAA:
             //  = 1;
             break;
@@ -495,20 +530,24 @@ void HandleControl(SensorProtocol *pkt) {
             break;
         }
 
-        switch (set_distance_learn) {
+        switch (set_distance_learn)
+        {
         case 0xAA:
-            DistanceThresholdLearningReqFlg = 1;
-            // sensor_status = 2; 
+            //DistanceThresholdLearningReqFlg = 1;
+            // sensor_status = 2;
             break;
 
         case 0x55:
-            if (sensor_status == 2) {
+            if (sensor_status == DistanceThresholdLearning_STATUS)
+            {
                 STOP_DistanceThresholdLearning_ReqFlg = 1;
-                if (PARA_TABLE_USE.data.dts6012StudyDistance != dts6012DistancdLearnValue) {
+                if (PARA_TABLE_USE.data.dts6012StudyDistance != dts6012DistancdLearnValue)
+                {
                     PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
                 }
 
-                if (PARA_TABLE_USE.data.nd06StudyDistance != nd06DistancdLearnValue) {
+                if (PARA_TABLE_USE.data.nd06StudyDistance != nd06DistancdLearnValue)
+                {
                     PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
                 }
             }
@@ -518,16 +557,19 @@ void HandleControl(SensorProtocol *pkt) {
             break;
         }
 
-        switch (set_close_time_learn) {
+        switch (set_close_time_learn)
+        {
         case 0xAA:
             ClosingTimeLearningReqFlg = 1;
-            // sensor_status = 3; 
+            // sensor_status = 3;
             break;
 
         case 0x55:
-            if (sensor_status == 2) {
+            if (sensor_status == 2)
+            {
                 STOP_ClosingTimeLearningReqFlg = 1;
-                if (PARA_TABLE_USE.data.closingDoorTime != closeTimeCnt) {
+                if (PARA_TABLE_USE.data.closingDoorTime != closeTimeCnt)
+                {
                     PARA_TABLE_USE.data.closingDoorTime = closeTimeCnt;
                 }
             }
@@ -554,29 +596,39 @@ void HandleControl(SensorProtocol *pkt) {
     // ???DATA1??
     resp->l1 = 2;
     uint8_t *resp_data = resp->data1;
-    if (returnSensorType != m_sensorType111) {
+    if (returnSensorType != m_sensorType111)
+    {
         resp_data[0] = 0;
-    } else {
+    }
+    else
+    {
         resp_data[0] = m_sensorType111;
     }
     // resp_data[1] = 0;  // ???
 
     // ???DATA2
     resp_data[2] = 2;
-    switch (setBeginDebug) {
+    switch (setBeginDebug)
+    {
     case 0XAA:
-        if (sensor_status == 6) {
+        if (sensor_status == 6)
+        {
             resp_data[3] = 0X88;
-        } else {
+        }
+        else
+        {
             resp_data[3] = 0X55;
         }
         break;
         // resp_data[3] = 0X88;
 
     case 0X55:
-        if (sensor_status == 1) {
+        if (sensor_status == 1)
+        {
             resp_data[3] = 0X88;
-        } else {
+        }
+        else
+        {
             resp_data[3] = 0X55;
         }
         break;
@@ -588,7 +640,8 @@ void HandleControl(SensorProtocol *pkt) {
 
     // ???DATA3
     resp_data[5] = 2;
-    switch (setDts6012En_PDA) {
+    switch (setDts6012En_PDA)
+    {
     case 0XAA:
         resp_data[6] = 0X88;
         break;
@@ -602,7 +655,8 @@ void HandleControl(SensorProtocol *pkt) {
 
     // ???DATA4
     resp_data[8] = 2;
-    switch (setNd06En_PDA) {
+    switch (setNd06En_PDA)
+    {
     case 0XAA:
         resp_data[9] = 0X88;
         break;
@@ -645,9 +699,8 @@ void HandleControl(SensorProtocol *pkt) {
     // ???DATA7
     // ??????
     resp_data[17] = 42;
-    switch (set_distance_learn) {
-    case 0XAA:
-        if (DistanceThresholdLearningSuccessFlg == 1) {
+		if (DistanceThresholdLearningSuccessFlg == 1)
+        {
             resp_data[18] = 0X88;
             // resp_data[19] = 0;
             // 3-4  20 21
@@ -656,27 +709,53 @@ void HandleControl(SensorProtocol *pkt) {
             WriteU16LittleEndian(&resp_data[22], nd06DistancdLearnValue); //   PARA_TABLE_USE.data.nd06StudyDistance
         } // if (DistanceThresholdLearningSuccessFlg == 1)
         // ????
-        else if (now_DistanceThresholdLearning_Flg == 1) {
+        else if (now_DistanceThresholdLearning_Flg == 1)
+        {
             resp_data[18] = 0XAA;
             WriteU16LittleEndian(&resp_data[20], 0);
             WriteU16LittleEndian(&resp_data[22], 0);
         }
         // ?????
-        else if (DistanceThresholdLearningFailed_Flg == 1) {
+        else if (DistanceThresholdLearningFailed_Flg == 1)
+        {
             resp_data[18] = 0X55;
             WriteU16LittleEndian(&resp_data[20], 0);
             WriteU16LittleEndian(&resp_data[22], 0);
         }
+    switch (set_distance_learn)
+    {
+    case 0XAA:
+        
         break;
 
     case 0X55:
         resp_data[18] = 0X55;
         // resp_data[19] = 0;
         // 3-4  20 21
-        WriteU16LittleEndian(&resp_data[20], 0);
-        // 5-6  22  23
-        WriteU16LittleEndian(&resp_data[22], 0);
-        break;
+//        WriteU16LittleEndian(&resp_data[20], 0);
+//        // 5-6  22  23
+//        WriteU16LittleEndian(&resp_data[22], 0);
+		switch (PARA_TABLE_USE.data.functionChioce)
+    {
+    case 0x11: //
+    {
+        PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
+				PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+				paraTable_Write();
+			break;
+    }
+    case 0x22: //
+    { 
+			PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance = dts6012DistancdLearnValue;
+				//PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+			memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, cargoLift_nd06LearnValue, 16);
+				paraTable_Write();
+			break;
+    }
+    default:
+      break;
+    }			
+		break;
 
     default:
         break;
@@ -690,7 +769,8 @@ void HandleControl(SensorProtocol *pkt) {
     // 7-10 24-27
     //  11-42 28 -59
     uint8_t idx = 28;
-    for (uint8_t i = 0; i < 16; i++) {
+    for (uint8_t i = 0; i < 16; i++)
+    {
         WriteU16LittleEndian(&resp_data[idx], PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance[i]);
         idx += 2;
     }
@@ -698,21 +778,25 @@ void HandleControl(SensorProtocol *pkt) {
     // ???DATA8
     // ?????????
     resp_data[60] = 10; // +43
-    switch (set_close_time_learn) {
+    switch (set_close_time_learn)
+    {
     case 0XAA:
-        if (ClosingTimeLearningSuccessFlg == 1) {
+        if (ClosingTimeLearningSuccessFlg == 1)
+        {
             resp_data[61] = 0X88;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], PARA_TABLE_USE.data.closingDoorTime);
         }
         // ????
-        else if (now_ClosingTimeLearning_Flg == 1) {
+        else if (now_ClosingTimeLearning_Flg == 1)
+        {
             resp_data[61] = 0XAA;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], 0);
         }
         // ?????
-        else if (ClosingTimeLearningFailed_Flg == 1) {
+        else if (ClosingTimeLearningFailed_Flg == 1)
+        {
             resp_data[61] = 0X55;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], 0);
@@ -748,9 +832,10 @@ void HandleControl(SensorProtocol *pkt) {
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer3, total_len_resp, 100);
 }
 
-uint8_t txBuffer4[162] = {0};
-uint32_t closingDoorTimeThreshold = 100; // F1.13????????????????
-void HandleParamRead(SensorProtocol *pkt) {
+
+
+void HandleParamRead(SensorProtocol *pkt)
+{
     // data1
     uint8_t *m_data1 = pkt->data1;
     uint8_t returnSensorType = m_data1[0];
@@ -773,9 +858,12 @@ void HandleParamRead(SensorProtocol *pkt) {
     // resp_data[offset++] = 2; // 0
 
     // DATA1
-    if (returnSensorType != m_sensorType111) {
+    if (returnSensorType != m_sensorType111)
+    {
         resp_data[offset++] = 0; // 1
-    } else {
+    }
+    else
+    {
         resp_data[offset++] = m_sensorType111;
     }
     offset++; // 2 ???
@@ -792,18 +880,21 @@ void HandleParamRead(SensorProtocol *pkt) {
     uint8_t *data2 = &resp_data2[9]; // ????DATA2 ????DATA1  // 10
     offset = 0;
 
-    switch (PARA_TABLE_USE.data.functionChioce) {
+    switch (PARA_TABLE_USE.data.functionChioce)
+    {
     case 0x11:
         /* ???? */
         data2[offset++] = 44; // L2
         // ????��??????????????
         // ??????????11???????????44/4=11??
-        for (int i = 2; i <= 12; i++) {
+        for (int i = 2; i <= 12; i++)
+        {
             uint32_t param = PARA_TABLE_USE.DATE[i];
             WriteU32LittleEndian(&data2[offset], param);
             offset += 4;
         }
-        WriteU32LittleEndian(&data2[offset], closingDoorTimeThreshold);
+				//WriteU32LittleEndian(&data2[offset], closingDoorTimeThreshold);
+        WriteU32LittleEndian(&data2[offset], PARA_TABLE_USE.data.closingDoorTimeThreshold);
         offset += 4;
         // ???????CRC
         resp->length = 60;
@@ -816,7 +907,8 @@ void HandleParamRead(SensorProtocol *pkt) {
 
         // ????��??????????????
         // ?????????14-36 = 23??????23*4=92
-        for (int i = 12; i <= 34; i++) {
+        for (int i = 12; i <= 34; i++)
+        {
             uint32_t param = PARA_TABLE_USE.DATE[i];
 
             WriteU32LittleEndian(&data2[offset], param);
@@ -842,8 +934,9 @@ void HandleParamRead(SensorProtocol *pkt) {
     return;
 }
 
-uint8_t txBuffer5[24] = {0};
-void HandleParamWrite(SensorProtocol *pkt) {
+
+void HandleParamWrite(SensorProtocol *pkt)
+{
     // ????????
     // data1
     uint8_t *m_data1 = pkt->data1;
@@ -870,24 +963,32 @@ void HandleParamWrite(SensorProtocol *pkt) {
     {
         PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
         writeStatus = 1;
-    } else if (PARA_TABLE_USE.data.functionChioce == 0x11 && groupIndex == 0 && internalIndex == 13) // F1.13????????????????
+    }
+    else if (PARA_TABLE_USE.data.functionChioce == 0x11 && groupIndex == 0 && internalIndex == 13) // F1.13????????????????
     {
-        closingDoorTimeThreshold = funcValue;
+        //closingDoorTimeThreshold = funcValue;
+			PARA_TABLE_USE.DATE[12] = funcValue;
     }
 
     // ???????��??
-    else if (PARA_TABLE_USE.data.functionChioce == 0x22 && groupIndex == 0 && internalIndex >= 14 && internalIndex <= 36) {
+    else if (PARA_TABLE_USE.data.functionChioce == 0x22 && groupIndex == 0 && internalIndex >= 14 && internalIndex <= 36)
+    {
         PARA_TABLE_USE.DATE[internalIndex - 2] = funcValue;
         writeStatus = 1;
-    } else if (groupIndex == 0 && internalIndex >= 1 && internalIndex <= 2) {
+    }
+    else if (groupIndex == 0 && internalIndex >= 1 && internalIndex <= 2)
+    {
         PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
         writeStatus = 1;
-    } else {
+    }
+    else
+    {
         writeStatus = 0; // ???????
     }
 
     // ???��Flash
-    if (writeStatus) {
+    if (writeStatus)
+    {
         paraTable_Write();
     }
 
@@ -904,9 +1005,12 @@ void HandleParamWrite(SensorProtocol *pkt) {
     uint8_t arrHeart1[2] = {0};
 
     // DATA1
-    if (returnSensorType != m_sensorType111) {
+    if (returnSensorType != m_sensorType111)
+    {
         arrHeart1[0] = 0;
-    } else {
+    }
+    else
+    {
         arrHeart1[0] = m_sensorType111;
     }
     memcpy(&resp_data[offset], arrHeart1, sizeof(arrHeart1));

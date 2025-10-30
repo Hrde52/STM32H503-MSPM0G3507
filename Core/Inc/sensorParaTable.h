@@ -3,7 +3,7 @@
 
 #include "main.h"
 
-#define FF_COUNT 36  //35
+#define FF_COUNT 37  //35
 
 typedef union {
     struct
@@ -21,6 +21,7 @@ typedef union {
         uint32_t nd06MaxChkDistance;          			// 0.10 4000
         uint32_t nd06MinChkDistance;          			// 0.11 300
         uint32_t closingDoorTime;            		 	// 0.12 1400
+				uint32_t closingDoorTimeThreshold;     // 0.13    100
         
         uint32_t cargoLift_dts6012StudyDistance;        // 0.13 2300
         uint32_t cargoLift_dts6012DistanceChkThreshold; // 0.14 300

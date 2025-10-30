@@ -59,8 +59,10 @@ extern uint8_t getIN_IO;
 
 extern uint8_t rxBuf[RX_BUF_SIZE];
 extern uint16_t receivedLength;
+extern uint8_t cargoLift_IN;
 
 void ProcessDTSDMAData(uint8_t *data, uint16_t length);
+int8_t checkSequenceMatch(const unsigned char received[30]);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -96,7 +98,6 @@ void ProcessDTSDMAData(uint8_t *data, uint16_t length);
 #define DTS6012_RX_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-extern uint8_t cargoLift_IN;
 void ToolingTest();
 void normalWork();
 /* USER CODE END Private defines */

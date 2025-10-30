@@ -11,3 +11,7 @@ uint8_t testDTS();
 uint8_t testND06();
 
 void testIO();
+
+void testInX();
+
+

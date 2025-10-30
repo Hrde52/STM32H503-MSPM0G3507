@@ -1,10 +1,9 @@
 #include "stmflash.h"
 
-
 /**
- * @brief       ´ÓÖ¸¶¨µØÖ·¶ÁÈ¡Ò»¸ö×Ö (32Î»Êý¾Ý)
- * @param       faddr   : ¶ÁÈ¡µØÖ· (´ËµØÖ·±ØÐëÎª4±¶Êý!!)
- * @retval      ¶ÁÈ¡µ½µÄÊý¾Ý (32Î»)
+ * @brief       ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½ï¿½ (32Î»ï¿½ï¿½ï¿½ï¿½)
+ * @param       faddr   : ï¿½ï¿½È¡ï¿½ï¿½Ö· (ï¿½Ëµï¿½Ö·ï¿½ï¿½ï¿½ï¿½Îª4ï¿½ï¿½ï¿½ï¿½!!)
+ * @retval      ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (32Î»)
  */
 uint32_t stmflash_read_word(uint32_t faddr)
 {
@@ -12,27 +11,27 @@ uint32_t stmflash_read_word(uint32_t faddr)
 }
 
 /**
- * @brief       ´ÓÖ¸¶¨µØÖ·¿ªÊ¼¶Á³öÖ¸¶¨³¤¶ÈµÄÊý¾Ý
- * @param       raddr : ÆðÊ¼µØÖ·
- * @param       pbuf  : Êý¾ÝÖ¸Õë
- * @param       length: Òª¶ÁÈ¡µÄ×Ö(32Î»)Êý,¼´4¸ö×Ö½ÚµÄÕûÊý±¶
- * @retval      ÎÞ
+ * @brief       ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Èµï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param       raddr : ï¿½ï¿½Ê¼ï¿½ï¿½Ö·
+ * @param       pbuf  : ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+ * @param       length: Òªï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½(32Î»)ï¿½ï¿½,ï¿½ï¿½4ï¿½ï¿½ï¿½Ö½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @retval      ï¿½ï¿½
  */
 void stmflash_read(uint32_t raddr, uint32_t *pbuf, uint32_t length)
 {
-    uint32_t  i;
+    uint32_t i;
 
     for (i = 0; i < length; i++)
     {
-        pbuf[i] = stmflash_read_word(raddr);/* ¶ÁÈ¡4¸ö×Ö½Ú */
-        raddr += 4;                         /* Æ«ÒÆ4¸ö×Ö½Ú */
+        pbuf[i] = stmflash_read_word(raddr); /* ï¿½ï¿½È¡4ï¿½ï¿½ï¿½Ö½ï¿½ */
+        raddr += 4;                          /* Æ«ï¿½ï¿½4ï¿½ï¿½ï¿½Ö½ï¿½ */
     }
 }
 
 /**
- * @brief       »ñÈ¡Ä³¸öµØÖ·ËùÔÚµÄflashÉÈÇø
- * @param       addr: flashµØÖ·
- * @retval      Ö¸¶¨µØÖ·ËùÔÚµÄflashÉÈÇø
+ * @brief       ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½Úµï¿½flashï¿½ï¿½ï¿½ï¿½
+ * @param       addr: flashï¿½ï¿½Ö·
+ * @retval      Ö¸ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½Úµï¿½flashï¿½ï¿½ï¿½ï¿½
  */
 static uint32_t stmflash_get_flash_sector(uint32_t addr)
 {
@@ -48,22 +47,22 @@ static uint32_t stmflash_get_flash_sector(uint32_t addr)
     }
     else
     {
-        sector = 0xFFFFFFFF;    /* µØÖ·Òç³ö */
+        sector = 0xFFFFFFFF; /* ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ */
     }
 
     return sector;
 }
 
 /**
- * @brief       »ñÈ¡Ä³¸öµØÖ·ËùÔÚµÄflash bank
- * @param       addr: flashµØÖ·
- * @retval      ·µ»ØÖµÊÇ£ºFLASH_BANK_1¡¢FLASH_BANK_2¡¢0xFFFFFFFF£¨±íÊ¾µØÖ·Òç³ö£©
+ * @brief       ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½Úµï¿½flash bank
+ * @param       addr: flashï¿½ï¿½Ö·
+ * @retval      ï¿½ï¿½ï¿½ï¿½Öµï¿½Ç£ï¿½FLASH_BANK_1ï¿½ï¿½FLASH_BANK_2ï¿½ï¿½0xFFFFFFFFï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 static uint32_t stmflash_get_flash_bank(uint32_t addr)
 {
     uint32_t bank = 0;
 
-    if((addr >= FLASH_BASE) && (addr < FLASH_BASE + FLASH_BANK_SIZE))
+    if ((addr >= FLASH_BASE) && (addr < FLASH_BASE + FLASH_BANK_SIZE))
     {
         bank = FLASH_BANK_1;
     }
@@ -73,18 +72,18 @@ static uint32_t stmflash_get_flash_bank(uint32_t addr)
     }
     else
     {
-        bank = 0xFFFFFFFF;      /* µØÖ·Òç³ö */
+        bank = 0xFFFFFFFF; /* ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ */
     }
 
     return bank;
 }
 
 /**
- * @brief       ÏòÖ¸¶¨µØÖ·Ð´ÈëÖ¸¶¨³¤¶ÈµÄÊý¾Ý
- * @param       waddr : Ö¸¶¨Ð´ÈëÊý¾ÝµÄÆðÊ¼µØÖ·
- * @param       pbuf  : ±£´æÐ´ÈëÊý¾ÝµÄÆðÊ¼µØÖ·
- * @param       length: Ö¸¶¨Ð´ÈëÊý¾ÝµÄ³¤¶È£¬µ¥Î»£º×Ö
- * @retval      ÎÞ
+ * @brief       ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ö·Ð´ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Èµï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param       waddr : Ö¸ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ö·
+ * @param       pbuf  : ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ö·
+ * @param       length: Ö¸ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ÝµÄ³ï¿½ï¿½È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+ * @retval      ï¿½ï¿½
  */
 void stmflash_write(uint32_t waddr, uint32_t *pbuf, uint32_t length)
 {
@@ -93,86 +92,74 @@ void stmflash_write(uint32_t waddr, uint32_t *pbuf, uint32_t length)
     uint32_t first_sector = 0;
     uint32_t num_sectors = 0;
     uint32_t bank_number = 0;
-    uint32_t erase_addr;                                                                    /* ²Á³ý´íÎó£¬Õâ¸öÖµÎª·¢Éú´íÎóµÄÉÈÇøµØÖ· */
+    uint32_t erase_addr; /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö· */
     FLASH_EraseInitTypeDef flash_erase_init = {0};
     HAL_StatusTypeDef status = HAL_OK;
 
-    if ((waddr < STM32_FLASH_BASE) ||                                                       /* Ö¸¶¨µØÖ·Ð¡ÓÚflashµÄÆðÊ¼µØÖ· */
-        (waddr > (STM32_FLASH_BASE + STM32_FLASH_SIZE)) ||                                  /* Ö¸¶¨µØÖ·´óÓÚflashµÄÄ©µØÖ· */
-         waddr % 4)                                                                         /* Ö¸¶¨µØÖ·Ã»ÓÐ°´4×Ö½Ú¶ÔÆë */
+    if ((waddr < STM32_FLASH_BASE) ||                      /* Ö¸ï¿½ï¿½ï¿½ï¿½Ö·Ð¡ï¿½ï¿½flashï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ö· */
+        (waddr > (STM32_FLASH_BASE + STM32_FLASH_SIZE)) || /* Ö¸ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½flashï¿½ï¿½Ä©ï¿½ï¿½Ö· */
+        waddr % 4)                                         /* Ö¸ï¿½ï¿½ï¿½ï¿½Ö·Ã»ï¿½Ð°ï¿½4ï¿½Ö½Ú¶ï¿½ï¿½ï¿½ */
     {
-        return;                                                                             /* ·Ç·¨µØÖ· */
+        return; /* ï¿½Ç·ï¿½ï¿½ï¿½Ö· */
     }
 
-    HAL_ICACHE_Disable();                                                                   /* ½ûÓÃÖ¸Áî»º´æ */
-    HAL_FLASH_Unlock();                                                                     /* FLASH½âËø */
+    HAL_ICACHE_Disable(); /* ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½î»ºï¿½ï¿½ */
+    HAL_FLASH_Unlock();   /* FLASHï¿½ï¿½ï¿½ï¿½ */
 
-    addrx = waddr;                                                                          /* Êý¾ÝÐ´ÈëµÄÆðÊ¼µØÖ· */
-    endaddr = waddr + length * 4;                                                           /* Êý¾ÝÐ´ÈëµÄ½áÊøµØÖ· */
+    addrx = waddr;                /* ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ö· */
+    endaddr = waddr + length * 4; /* ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½Ö· */
 
-    first_sector = stmflash_get_flash_sector(addrx);                                        /* »ñÈ¡Òª²Á³ýµÄµÚÒ»¸öÉÈÇø */
-    num_sectors = stmflash_get_flash_sector(endaddr) - first_sector + 1;                    /* »ñÈ¡Òª²Á³ýµÄÉÈÇøÊý */
-    bank_number = stmflash_get_flash_bank(addrx);                                           /* »ñÈ¡¸ø¶¨µØÖ·µÄbank */
+    first_sector = stmflash_get_flash_sector(addrx);                     /* ï¿½ï¿½È¡Òªï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    num_sectors = stmflash_get_flash_sector(endaddr) - first_sector + 1; /* ï¿½ï¿½È¡Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    bank_number = stmflash_get_flash_bank(addrx);                        /* ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½bank */
 
-    if (addrx < 0x0800FFFF)                                                                 /* Ö»ÓÐÖ÷´æ´¢Çø£¬²ÅÐèÒª½øÐÐ²Á³ý²Ù×÷ */
+    if (addrx < 0x0800FFFF) /* Ö»ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     {
-        while (addrx < endaddr)                                                             /* É¨ÇåÒ»ÇÐÕÏ°­(¶Ô·ÇFFFFFFFFµÄµØ·½,ÏÈ²Á³ý) */
+        while (addrx < endaddr) /* É¨ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ï°ï¿½(ï¿½Ô·ï¿½FFFFFFFFï¿½ÄµØ·ï¿½,ï¿½È²ï¿½ï¿½ï¿½) */
         {
-            if ((uint32_t)stmflash_read_word(addrx) != 0xFFFFFFFF)                          /* ´æÔÚ·Ç0xFFFFFFFF */
+            if ((uint32_t)stmflash_read_word(addrx) != 0xFFFFFFFF) /* ï¿½ï¿½ï¿½Ú·ï¿½0xFFFFFFFF */
             {
-                flash_erase_init.TypeErase = FLASH_TYPEERASE_SECTORS;                       /* ÒÔÉÈÇø²Á³ýµÄ·½Ê½ */
-                flash_erase_init.Banks = bank_number;                                       /* ²Á³ýËùÔÚµÄbank */
-                flash_erase_init.Sector = first_sector;                                     /* Òª²Á³ýµÄµÚÒ»¸öÉÈÇø */
-                flash_erase_init.NbSectors = num_sectors;                                   /* Òª²Á³ýµÄÉÈÇøÊý */
-                status = HAL_FLASHEx_Erase( &flash_erase_init, &erase_addr);
+                flash_erase_init.TypeErase = FLASH_TYPEERASE_SECTORS; /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½Ê½ */
+                flash_erase_init.Banks = bank_number;                 /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½bank */
+                flash_erase_init.Sector = first_sector;               /* Òªï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+                flash_erase_init.NbSectors = num_sectors;             /* Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+                status = HAL_FLASHEx_Erase(&flash_erase_init, &erase_addr);
 
-                if (status == HAL_OK)                                                       /* ²Á³ý³É¹¦ */
+                if (status == HAL_OK) /* ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ */
                 {
                     break;
                 }
             }
-            else                                                                            /* ÎÞÐè²Á³ý */
+            else /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
             {
                 addrx += 4;
             }
         }
     }
-    
-    if (status == HAL_OK)                                                                   /* ²Á³ýÉÈÇøÃ»ÓÐ´íÎó */
+
+    if (status == HAL_OK) /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½ */
     {
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
             HAL_FLASH_Program(FLASH_TYPEPROGRAM_QUADWORD, waddr, (uint32_t)&pbuf[i]);
-            waddr += 4;                                                                     /* Ö¸ÏòÏÂÒ»¸ö°ë×Ö */
+            waddr += 4; /* Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
         }
     }
-    
-    HAL_FLASH_Lock();                                                                       /* ÉÏËø */
-    HAL_ICACHE_Enable();                                                                    /* ÆôÓÃÖ¸Áî»º´æ */
+
+    HAL_FLASH_Lock();    /* ï¿½ï¿½ï¿½ï¿½ */
+    HAL_ICACHE_Enable(); /* ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½î»ºï¿½ï¿½ */
 }
 
 /***************************************************************************************************************************************/
-/* ²âÊÔÓÃ´úÂë */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ */
 
 /**
- * @brief       ²âÊÔÐ´Êý¾Ý(Ð´1¸ö×Ö)
- * @param       waddr : ÆðÊ¼µØÖ·
- * @param       wdata : ÒªÐ´ÈëµÄÊý¾Ý
- * @retval      ¶ÁÈ¡µ½µÄÊý¾Ý
+ * @brief       ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½(Ð´1ï¿½ï¿½ï¿½ï¿½)
+ * @param       waddr : ï¿½ï¿½Ê¼ï¿½ï¿½Ö·
+ * @param       wdata : ÒªÐ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @retval      ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 void stmflash_test_write(uint32_t waddr, uint32_t wdata)
 {
-    stmflash_write(waddr, &wdata, 1);                                                       /* Ð´ÈëÒ»¸ö×Ö */
+    stmflash_write(waddr, &wdata, 1); /* Ð´ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ */
 }
-
-
-
-
-
-
-
-
-
-
-
-

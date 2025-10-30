@@ -9,39 +9,38 @@ uint32_t nd06OutputEN = 0;
 uint32_t closingDoorTimeCnt = 0;
 uint32_t closingDoorTimeCountFlg = 0;
 
-
 DoorState currentDoorState = STATE_UNKNOWN;
 void DetectInitialState(void)
 {
     if (CSpara.CLS == 1)
     {
-        currentDoorState = STATE_CLOSED; // ¹ØÃÅµ½Î»
+        currentDoorState = STATE_CLOSED; // ï¿½ï¿½ï¿½Åµï¿½Î»
     }
     else if (CSpara.OLS == 1)
     {
-        currentDoorState = STATE_OPENED; // ¿ªÃÅµ½Î»
+        currentDoorState = STATE_OPENED; // ï¿½ï¿½ï¿½Åµï¿½Î»
     }
     else if (CSpara.openDoorCmd == 1)
     {
-        currentDoorState = STATE_OPENING; // ÕýÔÚ¿ªÃÅ
+        currentDoorState = STATE_OPENING; // ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½
     }
     else if (CSpara.closeDoorCmd == 1)
     {
-        currentDoorState = STATE_CLOSING; // ÕýÔÚ¹ØÃÅ
+        currentDoorState = STATE_CLOSING; // ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½
     }
     else
     {
-        // ÎÞ·¨È·¶¨×´Ì¬£¬Ä¬ÈÏ¹ØÃÅ£¨»ò±¨´í£©
+        // ï¿½Þ·ï¿½È·ï¿½ï¿½×´Ì¬ï¿½ï¿½Ä¬ï¿½Ï¹ï¿½ï¿½Å£ï¿½ï¿½ò±¨´ï¿½ï¿½ï¿½
         currentDoorState = STATE_CLOSED;
     }
 }
 
 uint32_t closingPhaseTimer = 0;
 DoorState pastDoorState = STATE_UNKNOWN;
-// ×´Ì¬»ú¸üÐÂº¯Êý
+// ×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½
 void UpdateDoorStateMachine(void)
 {
-    // È·±£Æ½²ãÐÅºÅÓÐÐ§
+    // È·ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½Ð§
     if (CSpara.LevelingSignal == 0 && masterElevator_LevelingSignal == 0)
     {
         IdleFlg = 1;
@@ -52,53 +51,53 @@ void UpdateDoorStateMachine(void)
 
     switch (currentDoorState)
     {
-        // Èç¹û×´Ì¬Î´Öª£¬ÏÈ¼ì²â³õÊ¼×´Ì¬
+        // ï¿½ï¿½ï¿½×´Ì¬Î´Öªï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½Ê¼×´Ì¬
     case STATE_UNKNOWN:
         DetectInitialState();
         break;
 
-    case STATE_CLOSED: // ¹ØÃÅµ½Î»×´Ì¬
-			pastDoorState = currentDoorState;
+    case STATE_CLOSED: // ï¿½ï¿½ï¿½Åµï¿½Î»×´Ì¬
+        pastDoorState = currentDoorState;
         if (CSpara.openDoorCmd /*&& CSpara.CLS*/)
-        {           
+        {
             currentDoorState = STATE_OPENING;
         }
-				
+
         break;
 
-    case STATE_OPENING: // ¿ªÃÅ¹ý³ÌÖÐ
-			pastDoorState = currentDoorState;
+    case STATE_OPENING: // ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½
+        pastDoorState = currentDoorState;
         if (CSpara.OLS)
         {
             currentDoorState = STATE_OPENED;
         }
-			  else if(CSpara.closeDoorCmd)
-				{
-					currentDoorState = STATE_CLOSING;
-				}
-				
+        else if (CSpara.closeDoorCmd)
+        {
+            currentDoorState = STATE_CLOSING;
+        }
+
         break;
 
-    case STATE_OPENED: // ¿ªÃÅµ½Î»×´Ì¬
-			pastDoorState = currentDoorState;
+    case STATE_OPENED: // ï¿½ï¿½ï¿½Åµï¿½Î»×´Ì¬
+        pastDoorState = currentDoorState;
         if (CSpara.closeDoorCmd)
         {
             currentDoorState = STATE_CLOSING;
-            closingPhaseTimer = 0; // ÖØÖÃ¹ØÃÅ¹ý³Ì¼ÆÊ±Æ÷
+            closingPhaseTimer = 0; // ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½Å¹ï¿½ï¿½Ì¼ï¿½Ê±ï¿½ï¿½
         }
         break;
 
-    case STATE_CLOSING: // ¹ØÃÅ¹ý³ÌÖÐ
-			pastDoorState = currentDoorState;
+    case STATE_CLOSING: // ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½
+        pastDoorState = currentDoorState;
         if (CSpara.CLS)
         {
             currentDoorState = STATE_CLOSED;
         }
         else if (CSpara.openDoorCmd)
-        {        
+        {
             currentDoorState = STATE_OPENING;
         }
-        
+
         break;
 
     default:
@@ -110,23 +109,23 @@ void ElevatorSignaMonitoring(void)
 {
     switch (currentDoorState)
     {
-    case STATE_CLOSED: 
-        ds6012OutputEN = 1;
-        nd06OutputEN = 1;   
-        break;
-
-    case STATE_OPENING: 
-        ds6012OutputEN = 0;
-        nd06OutputEN = 0;
-        break;
-
-    case STATE_OPENED: 
+    case STATE_CLOSED:
         ds6012OutputEN = 1;
         nd06OutputEN = 1;
         break;
 
-    case STATE_CLOSING:                                           
-        if (closingPhaseTimer++ < PARA_TABLE_USE.data.closingDoorTime / 10)    // 5msÖÜÆÚ¼ì²é 
+    case STATE_OPENING:
+        ds6012OutputEN = 0;
+        nd06OutputEN = 0;
+        break;
+
+    case STATE_OPENED:
+        ds6012OutputEN = 1;
+        nd06OutputEN = 1;
+        break;
+
+    case STATE_CLOSING:
+        if (closingPhaseTimer++ < PARA_TABLE_USE.data.closingDoorTime / 10) // 5msï¿½ï¿½ï¿½Ú¼ï¿½ï¿½
         {
             ds6012OutputEN = 1;
             nd06OutputEN = 1;
@@ -136,7 +135,7 @@ void ElevatorSignaMonitoring(void)
             ds6012OutputEN = 1;
             nd06OutputEN = 0;
         }
-        
+
         break;
 
     default:
