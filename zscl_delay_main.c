@@ -901,6 +901,16 @@ void uart0_receive(void)
 }
 
 
+uint8_t xor_checkSum(uint8_t *data, uint8_t length)
+{
+    uint8_t checkSum = 0;
+    for (uint8_t i = 0; i < length; i++)
+    {
+        checkSum ^= data[i];
+    }
+    return checkSum;
+}
+
 uint8_t rxBuffT[20] = {0};
 //   0  1    2   3   4 5678   9 10 11 12 13 14
 //  485 4852 dts nd X  dts[4] nd [6]
@@ -933,41 +943,57 @@ void uart_receive_rs485(void)
                   //TFD
                   case 0:
                   {
+                    
                     switch(selectTFD)
                     {
                       //TFD01
                       case 0:
                       {
-                        
-                        if(rxBuffT[1] == 0x1F)// 485
+                        if((getRspHSTFD1 == 0) && (in_times < 100))
                         {
-                          rxTFD1[0] =1;
-                          getRspTFD11 = 1;
+                          if((rxBuffT[0] == 0XCC) &&(rxBuffT[1] == 0XCF) &&(rxBuffT[2] == 0XCF) &&(rxBuffT[3] == 0XCF))
+                          {
+                            getRspHSTFD1 = 1;
+                            in_times = 105;
+                            // add 1029 14:33
+                            getRspTFD11 = 1;
+                            in_times = 155;
+                            m_send_message_times1 = 10;
+                              
+                          }
                         }
-                        
-                        else if(rxBuffT[1] == 0x2F)// 485 GHP
+                        else
                         {
-                           getRspTFD12 = 1;
-                           rxTFD1[1] = 1;
-                                
-                           if(rxBuffT[2] == 1)  // dts6012
-                           {
-                             rxTFD1[2] = 1;
+                          if(rxBuffT[1] == 0x1F)// 485
+                          {
+                            rxTFD1[0] =1;
+                            getRspTFD11 = 1;
+                          }
+                          
+                          else if(rxBuffT[1] == 0x2F)// 485 GHP
+                          {
+                             getRspTFD12 = 1;
+                             rxTFD1[1] = 1;
+                                  
+                             if(rxBuffT[2] == 1)  // dts6012
+                             {
+                               rxTFD1[2] = 1;
+                               
+                             }
+                             mem_copy(&rxTFD1[5], &rxBuffT[8], 4);   // 6 7 8 9  
                              
-                           }
-                           mem_copy(&rxTFD1[5], &rxBuffT[8], 4);   // 6 7 8 9  
-                           
-                           if(rxBuffT[3] == 1)  // ND
-                           {
-                             rxTFD1[3] = 1;
+                             if(rxBuffT[3] == 1)  // ND
+                             {
+                               rxTFD1[3] = 1;
+                               
+                             }
+                             mem_copy(&rxTFD1[9], &rxBuffT[12], 6);   // 10 11 12 13 14 15
                              
-                           }
-                           mem_copy(&rxTFD1[9], &rxBuffT[12], 6);   // 10 11 12 13 14 15
-                           
-                           if(rxBuffT[4] == 1)  // dts6012
-                           {
-                             rxTFD1[4] = 1;               
-                           }
+                             if(rxBuffT[4] == 1)  // dts6012
+                             {
+                               rxTFD1[4] = 1;               
+                             }
+                          }
                         }
                         break;
                       }
@@ -975,6 +1001,20 @@ void uart_receive_rs485(void)
                       //TFD02
                       case 1:
                       {
+                        if((getRspHSTFD2 == 0) && (in2_times < 100))
+                        {
+                          if((rxBuffT[0] == 0XCC) &&(rxBuffT[1] == 0XCF) &&(rxBuffT[2] == 0XCF) &&(rxBuffT[3] == 0XCF))
+                          {
+                            getRspHSTFD2 = 1;
+                            in2_times = 105;
+                            // add 1029 14:33
+                            getRspTFD21 = 1;
+                            in2_times = 155;
+                            m_send_message_times2 = 10;
+                          }
+                        }
+                        else
+                        {
                         if(rxBuffT[1] == 0x1F)// 485
                         {
                           rxTFD2[0] =1;
@@ -1005,6 +1045,7 @@ void uart_receive_rs485(void)
                              rxTFD2[4] = 1;               
                            }
                         }
+                        }
                         break;
                       }
                       
@@ -1033,10 +1074,6 @@ void uart_receive_rs485(void)
                       getRspNd062 = 1;
                     }
                     
-//                    if(rxd_flag_ND1 == 1 && rxd_flag_ND2 == 1)
-//                    {
-//                      rxd_flag_rs485B = 1;
-//                    }
                     
                     break;
                   }

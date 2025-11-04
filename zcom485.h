@@ -222,6 +222,12 @@ extern uint8_t homework_switch1;
 extern uint8_t homework_switch2;
 extern uint8_t homework_switch3;
 
+extern uint16_t m_send_message_times1;
+extern uint16_t m_send_message_times2;
+extern uint16_t in_times;
+extern uint16_t in2_times;
+extern uint8_t getRspHSTFD1;
+extern uint8_t getRspHSTFD2;
 extern uint8_t getRspNd061;
 extern uint8_t getRspNd062;
 extern uint8_t getRspTFD11;

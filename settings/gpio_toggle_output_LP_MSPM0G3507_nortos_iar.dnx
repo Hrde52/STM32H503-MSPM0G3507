@@ -33,7 +33,7 @@
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>1789897006</Checksum>
+        <Checksum>2067888555</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -51,14 +51,14 @@
         <ShowArgs>0</ShowArgs>
     </CallStack>
     <JLinkDriver>
-        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
-        <CStepIntDis>_ 0</CStepIntDis>
         <jlinkResetStyle>12</jlinkResetStyle>
         <jlinkResetStrategy>0</jlinkResetStrategy>
         <MultiCoreRunAll>0</MultiCoreRunAll>
         <TraceBufferSize>0x10000</TraceBufferSize>
         <TraceStallIfFIFOFull>0x0</TraceStallIfFIFOFull>
         <TracePortSize>0x4</TracePortSize>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
+        <CStepIntDis>_ 0</CStepIntDis>
     </JLinkDriver>
     <struct_types>
         <Fmt0>DL_MCAN_RxBufElement-id	3	0</Fmt0>
@@ -88,6 +88,20 @@
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
     </Trace2>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>1</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+    </DriverProfiling>
+    <Aliases>
+        <A0>_ "/home/developer/.cache/bazel/_bazel_developer/2ca1f4ebdc59348ffdc31d97a51a98d5/execroot/__main__/bazel-out/k8-opt/bin/source/ti/driverlib\dl_common.c" ""</A0>
+        <A1>_ "/home/developer/.cache/bazel/_bazel_developer/2ca1f4ebdc59348ffdc31d97a51a98d5/execroot/__main__/bazel-out/k8-opt/bin/source/ti/driverlib\dl_common.h" ""</A1>
+        <A2>_ "/home/developer/.cache/bazel/_bazel_developer/2ca1f4ebdc59348ffdc31d97a51a98d5/execroot/__main__/bazel-out/k8-opt/bin/source/ti/driverlib\dl_mcan.c" ""</A2>
+        <Count>3</Count>
+        <SuppressDialog>0</SuppressDialog>
+        <SuppressResolveSourcesForDebugTarget>1</SuppressResolveSourcesForDebugTarget>
+    </Aliases>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -96,20 +110,8 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\zcom485.c}.677.19" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_DATA" "mem_copy" 0 0 0 0 4294967295</Bp1>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\zscl_delay_main.c}.939.17" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\zscl_delay_main.c}.1061.21" 0 0 1 "" 0 "" 0</Bp1>
         <Count>2</Count>
     </Breakpoints2>
-    <DriverProfiling>
-        <Enabled>0</Enabled>
-        <Mode>1</Mode>
-        <Graph>0</Graph>
-        <Symbiont>0</Symbiont>
-    </DriverProfiling>
-    <Aliases>
-        <A0>_ "/home/developer/.cache/bazel/_bazel_developer/2ca1f4ebdc59348ffdc31d97a51a98d5/execroot/__main__/bazel-out/k8-opt/bin/source/ti/driverlib\dl_mcan.c" ""</A0>
-        <Count>1</Count>
-        <SuppressDialog>0</SuppressDialog>
-        <SuppressResolveSourcesForDebugTarget>1</SuppressResolveSourcesForDebugTarget>
-    </Aliases>
 </settings>

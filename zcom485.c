@@ -212,8 +212,8 @@ void send_test_result(const bool mState)
   /*L7 ND测距信息*/
   m_pResult_msg.nData[indexNDdata++] = 2;
   
-  m_pResult_msg.nData[indexNDdata++] = rxBuffT[15]; 
-  m_pResult_msg.nData[indexNDdata++] = rxBuffT[14];
+  m_pResult_msg.nData[indexNDdata++] = rxBuffT[14];   //15
+  m_pResult_msg.nData[indexNDdata++] = rxBuffT[13];  // 14
 
   /*L8 DTS6012测距信息*/
   m_pResult_msg.nData[indexNDdata++] = 2;
@@ -453,8 +453,7 @@ uint8_t testNd062[10] = {0XCD, 0x22, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0
 
 uint8_t testTFD11[10] = {0XAC, 0x11, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x1f};
 uint8_t testTFD12[10] = {0XAC, 0x22, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x2f};//Y5开启，测试485
-uint8_t handTFD1[10] = {0XAC, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f};
-uint8_t handTFD2[10] = {0XAC, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0x1f};//Y5开启，测试485
+uint8_t handTFD1[10] = {0XAC, 0x01, 0x12,  0x23, 0x34, 0x45, 0x56, 0x67, 0x78, 0x89};
 
 uint8_t testTFD21[10] = {0XAC, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1f};
 uint8_t testTFD22[10] = {0XAC, 0x22, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x2f};//Y5开启，测试485
@@ -466,6 +465,10 @@ uint16_t m_send_message_times1 = 0;
 uint16_t m_send_message_times2 = 0;
 uint16_t m_send_message_times3 = 0;
 uint16_t m_send_message_times4 = 0;
+
+uint8_t getRspHSTFD1 = 0;
+uint8_t getRspHSTFD2 = 0;
+
 uint8_t getRspNd061= 0;
 uint8_t getRspNd062= 0;
 uint8_t getRspTFD11= 0;
@@ -473,93 +476,131 @@ uint8_t getRspTFD12= 0;
 uint8_t getRspTFD21= 0;
 uint8_t getRspTFD22= 0;
 uint8_t selectTFD = 0;
+
+uint8_t TFD1Pass= 0;
+uint8_t TFD2Pass= 0;
+uint8_t ND1Pass= 0;
+uint8_t ND2Pass= 0;
+
+//uint8_t Y0OF = 0;
+//uint8_t Y1OF= 0;
+
+
+
+void turnOnTFD1()
+{
+  DL_GPIO_clearPins(ROUT_Y1_PORT,ROUT_Y1_PIN_4_PIN); // Y1clear TFD1上电 同时X有输出
+  DL_GPIO_clearPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN); //
+}
+
+void turnOnTFD2()
+{
+  DL_GPIO_setPins(ROUT_Y1_PORT,ROUT_Y1_PIN_4_PIN); // Y1clear TFD1上电 同时X有输出
+  DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN); //
+}
+
+void testTFDX()
+{
+  DL_GPIO_setPins(ROUT_Y3_PORT,ROUT_Y3_PIN_6_PIN); // Y3测试输入X0
+}
+
 void boardtest_loop_process()
 {
   homework_switch1 = DL_GPIO_readPins(IX7_PORT,IX7_PIN_16_PIN)>0? 1:0;
   homework_switch2 = DL_GPIO_readPins(IX6_PORT,IX6_PIN_15_PIN)>0? 1:0;
   homework_switch3 = DL_GPIO_readPins(IX5_PORT,IX5_PIN_14_PIN)>0? 1:0;
-                  
+
+//  if(Y0OF)
+//  {
+//    DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN); //
+//  }
+//  else
+//  {
+//    DL_GPIO_clearPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN); //
+//  }
+//  if(Y1OF)
+//  {
+//    DL_GPIO_setPins(ROUT_Y1_PORT,ROUT_Y1_PIN_4_PIN); //
+//  }
+//  else
+//  {
+//    DL_GPIO_clearPins(ROUT_Y1_PORT,ROUT_Y1_PIN_4_PIN); //
+//  }  
+  
   switch(homework_switch1)
   {
     
     case 0:
     {
-      
+      /*
+Y5  485
+Y0  TFD
+Y3  X0
+      */
       switch(selectTFD)
       {
         
         case 0:
         {
-          
-          DL_GPIO_clearPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // Y5切换485
-          
-          DL_GPIO_clearPins(ROUT_Y3_PORT,ROUT_Y3_PIN_6_PIN); // Y3测试输入X0
-          if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN)>0 )
+          turnOnTFD1();            
+          testTFDX();
+          if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN) > 0 )
+          {
             board4_err.bit.TFD1_IO =  0;  // 输出
+          }
           
           if(in_times == 1 && m_send_message_times1 < 3)
           {
-            send_shake_hand();
-            
+            send_shake_hand();        
           }
           
           in_times++;
           
-          if(in_times == 40)
+
+          if( (in_times > 2) &&(in_times < 100) && (getRspHSTFD1 == 0))
           {
+            
             SCL2_TXEN(10, handTFD1);    // 握手
-            
+          }
+              
+          if((in_times == 100) && (getRspHSTFD1 == 0))
+          {
+            send_test_result(0);
+            TFD1Pass = 1;
           }
           
-          if((in_times >= 55) && (in_times < 85))
-          {
-            
-            DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN); 
-          }
-          if(in_times == 75)
-          {
-            
-            //DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);        // 切换TFD  
-            SCL2_TXEN(10, handTFD1);  // 握手
-                
-          }
+          // ********************************
           
-          if( in_times >= 85)
+          if(m_send_message_times1< 10 )
           {
-            DL_GPIO_clearPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 切换TFD  
-          }
-          
-          
-          if(m_send_message_times1< 3 )
-          {
-            if(in_times >= 100)
+            if(in_times >= 105)
             {          
-              if((in_times%10) == 0)
+              if((in_times%5) == 0)
               {
                 if(getRspTFD11== 0)
                 {
                   m_send_message_times1++;
                   SCL2_TXEN(10, testTFD11);
-                  if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN)>0 )
+                  if(DL_GPIO_readPins(IX0_PORT,IX0_PIN_9_PIN) > 0 )
+                  {
                     board4_err.bit.TFD1_IO =  0;  // 输出
+                  }
                 }
                 else
                 {
-                  m_send_message_times1= 3;
-                  //in_times = 0;
+                  m_send_message_times1= 10;
+                  in_times = 155;
                 }
               }
-          }
+            }
             
           }
-          else if(m_send_message_times1 >= 3 && m_send_message_times1< 6 )
+          else if(m_send_message_times1 >= 10 && m_send_message_times1< 20 )
           {
-           // in_times++;
-            if(in_times >= 200)
+            if(in_times >= 155)
             {
-              DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // Y5切换485
-              
-              if((in_times%30) == 0)
+              //DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // Y5切换485             
+              if((in_times%5) == 0)
               {
                 if( getRspTFD12== 0 )
                 {
@@ -570,7 +611,7 @@ void boardtest_loop_process()
                 }
                 else
                 {
-                  m_send_message_times1= 6;
+                  m_send_message_times1= 20;
                   in_times = 0;
                 }
               }
@@ -594,6 +635,7 @@ void boardtest_loop_process()
               board4_err.bit.TFD1_DTS6012 = (rxTFD1[2] == 0) ? 0 : 1;
               board4_err.bit.TFD1_ND06 = (rxTFD1[3] == 0) ? 0 : 1;
               board4_err.bit.TFD1_X = (rxTFD1[4] == 0) ? 0 : 1;
+//              board4_err.bit.TFD1_X = (rxTFD1[4] == 1) ? 0 : 1;
             }
             
             //board4_err.bit.TFD1_IO = 1;          
@@ -602,43 +644,53 @@ void boardtest_loop_process()
             {
                send_test_result(0);
                board4_err.all = 0;
+               TFD1Pass = 1;
             }
             else
             {
               send_test_result(1);
                board4_err.all = 0;
-            
+              TFD1Pass = 1;
             }
                   
             in_times = 0;
             //m_send_message_times1= 0;
             selectTFD = 1;
+            turnOnTFD2();
           }
           
           break;
         }
         case 1:
         {
-         DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的GHP485连接
-         DL_GPIO_clearPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换485
-         
-         DL_GPIO_clearPins(ROUT_Y3_PORT,ROUT_Y3_PIN_6_PIN); // 打开Y3测试输入0
+          turnOnTFD2();
+
+         testTFDX();
          if(DL_GPIO_readPins(IX1_PORT,IX1_PIN_10_PIN)>0)
-          board4_err.bit.TFD2_IO = 0;
-         
-         //DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换TFD2
-         if(in2_times == 1 && m_send_message_times2 < 3)
          {
-            send_shake_hand();
+            board4_err.bit.TFD2_IO = 0;
          }
-         // send_shake_hand();
+         
+         
+          if( (in2_times > 1) &&(in2_times < 100) && (getRspHSTFD2 == 0))
+          {
+              SCL2_TXEN(10, handTFD1);    // 握手
+          }
+          
+          
+          if((in2_times == 100) && (getRspHSTFD2 == 0))
+          {
+            send_test_result(0);
+            TFD2Pass = 1;
+          }
+         
           in2_times++;
           
-          if(m_send_message_times2< 3 )
+          if(m_send_message_times2< 10 )
           {
-            if(in2_times >= 100)
+            if(in2_times >= 105)
             { 
-              if((in2_times%10) == 0)
+              if((in2_times%5) == 0)
               {
                 if(getRspTFD21== 0)
                 {
@@ -649,21 +701,20 @@ void boardtest_loop_process()
                 }
                 else
                 {
-                  m_send_message_times2= 3;
-                  //in2_times = 0;
+                  m_send_message_times2= 10;
+                  in2_times = 155;
                 }
               }
           }
             
           }
-          else if(m_send_message_times2 >= 3 && m_send_message_times2< 6 )
+          else if(m_send_message_times2 >= 10 && m_send_message_times2< 20 )
           {
-           // in_times++;
-            if(in2_times >= 200)
+            if(in2_times >= 155)
             {
-              //DL_GPIO_setPins(ROUT_Y0_PORT,ROUT_Y0_PIN_20_PIN);   // 打开Y0换通用程序的GHP485连接
-              DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 打开Y5切换TFD1
-              if((in2_times%30) == 0)
+              DL_GPIO_setPins(ROUT_Y5_PORT,ROUT_Y5_PIN_8_PIN); // 
+              
+              if((in2_times%5) == 0)
               {
                 if( getRspTFD22== 0 )
                 {
@@ -674,7 +725,7 @@ void boardtest_loop_process()
                 }
                 else
                 {
-                  m_send_message_times2= 6;
+                  m_send_message_times2= 20;
                   in2_times = 0;
                   
                   
@@ -692,20 +743,20 @@ void boardtest_loop_process()
                     board4_err.bit.TFD2_DTS6012 = (rxTFD2[2] == 0) ? 0 : 1;
                     board4_err.bit.TFD2_ND06 = (rxTFD2[3] == 0) ? 0 : 1;
                     board4_err.bit.TFD2_X = (rxTFD2[4] == 0) ? 0 : 1;
+//                    board4_err.bit.TFD2_X = (rxTFD2[4] == 1) ? 0 : 1;
                   }
                   
-                  //send_test_result(0);
-                  //if(!getRspTFD11  || !getRspTFD12 || !getRspTFD21 || !getRspTFD22)
                   if(board4_err.all >= 256)
                   {
                      send_test_result(0);
+                     TFD2Pass = 1;
 
                   }
                   else
                   {
                     send_test_result(1);
-                     board4_err.all = 0;
-                  
+                    board4_err.all = 0;
+                    TFD2Pass = 1;
                   }
                   
                   
@@ -714,22 +765,27 @@ void boardtest_loop_process()
             }
             
           }
-          else if(m_send_message_times2 == 6 && in2_times == 10)
+          else if(m_send_message_times2 == 20 && in2_times == 10)
           {
             
             send_test_end();
           }
+          
           break;
         }
         default:
           break;
       }  // END OF switch(selectTFD)
-
+      
+      if(TFD1Pass ==1 && TFD2Pass == 1)
+      {
+        send_test_end();
+      }
       break;
     }
     case 1:
     {
-
+      //DL_GPIO_setPins(ROUT_Y4_PORT,ROUT_Y4_PIN_13_PIN); // Y5切换485
       if(nd_times == 1 && m_send_message_times3 < 3){
         send_shake_hand();
        }
@@ -739,9 +795,9 @@ void boardtest_loop_process()
       if(m_send_message_times3< 3 )
       {       
         
-        if(nd_times >= 100)
+        if(nd_times >= 40)
         {
-          if((nd_times%10) == 0)
+          if((nd_times%5) == 0)
           {
             if(getRspNd061== 0)
             {
@@ -777,14 +833,14 @@ void boardtest_loop_process()
       else if(m_send_message_times3 > 3 && m_send_message_times3< 6 )
       {
 
-       if(nd_times == 201 && m_send_message_times3 == 4)
+       if(nd_times == 81 && m_send_message_times3 == 4)
        {
         send_shake_hand();
        }
         
-       if(nd_times >= 200)
+       if(nd_times >= 85)
        {
-        if((nd_times%10) == 0)
+        if((nd_times%5) == 0)
         {
           if( getRspNd062== 0 )
           {
@@ -828,39 +884,6 @@ void boardtest_loop_process()
   }
   
   
-  
-  
-//  if(m_test_state == READY)
-//  {
-//    send_shake_hand();
-//  }
-  if (m_test_state == AUTHOR)
-  {
-    if( mtestmsg.finish==0)
-    {
-      if(0 == (m_send_times++ % 5))
-      {
-        send_heart_beat();
-      }
-      board_test();
-    }
-    else
-    {
-      bool rep = true;
-      if(board_err.all==0)
-      {
-        rep = true;
-      }
-      else
-      {
-        rep = false;
-      }
-      
-      if(nd_times == 10){
-      send_test_result(rep);
-      }
-    }
-  }
 }
 
   uint32_t io4_read;
