@@ -559,8 +559,8 @@ int main(void)
                         // 驱动继电器2 进行 485连接的切换
                         //ROUT(ROUT_Y6_PIN_7_PIN, 0);
                         
-                         send_test_result(1);
-                         send_test_end();
+//                         send_test_result(1);
+//                         send_test_end();
                         
 			// rs485B_txd_start(rxd_uart1_tmp.rxd_uart_data,rxd_uart1_tmp.rxd_uart_length);
 			//rxd_uart1_tmp.rxd_uart_length = 0;

@@ -381,65 +381,65 @@ bool handle_com_data()
     return res;
   }
   
-  switch (pData.mCmd)
-  {
-  case COM_SHAKEHAND_CMD:
-    {
-      m_test_state = START;
-      m_bk[0] = pData.mBk[0];
-      m_bk[1] = pData.mBk[1];
-      res = true;
-      request_set_code();
-      break;
-    }
-  case COM_SETUP_CONFIG_CMD:
-    res = true;
-    break;
-  case COM_TEST_END_CMD:
-    {
-      m_test_state = END;    
-      res = true;
-      break;
-    }
-  case COM_TEST_RESULT_CMD:
-    {
-      m_test_state = RESULT;
-      res = true;
-      send_test_end();
-      break;
-    }
-  case COM_SET_CODE_CMD:
-    {       
-      //m_id_code = std::string((char *)&pData.nData[5], 4);
-      //write_file_code(ID_CODE_NAME_PATH, m_id_code.data());
-      mem_copy((uint8_t *)&m_id_code.data[0], (uint8_t *)&pData.nData[5],4);
-      //request_authorize_fun();
-      m_test_state = AUTHOR;
-      res = true;
-      break;
-    }
-  case COM_AUTHORIZATION_CMD:
-    {   
-      m_test_state = AUTHOR;
-      res = true;
-      //write_file_code(LICESE_NAME_PATH, "COM_AUTHORIZATION");
-      //m_send_heart_beat_times = 0;
-      break;
-    }
-  case COM_SEND_VER_ID_CMD:
-    res = true;
-    break;
-  case COM_REQEST_CERT_CMD:
-    res = true;
-    break;
-  case COM_SEND_CERT_CMD:
-    res = true;
-    break;
-  default:
-    res = true;
-    break;
-  }
-  
+//  switch (pData.mCmd)
+//  {
+//  case COM_SHAKEHAND_CMD:
+//    {
+//      m_test_state = START;
+//      m_bk[0] = pData.mBk[0];
+//      m_bk[1] = pData.mBk[1];
+//      res = true;
+////      request_set_code();
+//      break;
+//    }
+//  case COM_SETUP_CONFIG_CMD:
+//    res = true;
+//    break;
+//  case COM_TEST_END_CMD:
+//    {
+//      m_test_state = END;    
+//      res = true;
+//      break;
+//    }
+//  case COM_TEST_RESULT_CMD:
+//    {
+//      m_test_state = RESULT;
+//      res = true;
+////      send_test_end();
+//      break;
+//    }
+//  case COM_SET_CODE_CMD:
+//    {       
+//      //m_id_code = std::string((char *)&pData.nData[5], 4);
+//      //write_file_code(ID_CODE_NAME_PATH, m_id_code.data());
+//      mem_copy((uint8_t *)&m_id_code.data[0], (uint8_t *)&pData.nData[5],4);
+//      //request_authorize_fun();
+//      m_test_state = AUTHOR;
+//      res = true;
+//      break;
+//    }
+//  case COM_AUTHORIZATION_CMD:
+//    {   
+//      m_test_state = AUTHOR;
+//      res = true;
+//      //write_file_code(LICESE_NAME_PATH, "COM_AUTHORIZATION");
+//      //m_send_heart_beat_times = 0;
+//      break;
+//    }
+//  case COM_SEND_VER_ID_CMD:
+//    res = true;
+//    break;
+//  case COM_REQEST_CERT_CMD:
+//    res = true;
+//    break;
+//  case COM_SEND_CERT_CMD:
+//    res = true;
+//    break;
+//  default:
+//    res = true;
+//    break;
+//  }
+//  
   return res;
 }
 
